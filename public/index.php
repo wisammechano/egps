@@ -20,12 +20,12 @@ if (DEV_ENV == true) {
 	ini_set('display_errors', 0);
 	ini_set('log_errors', 1);
 	ini_set('track_errors', 1);
-	ini_set('error_log', ROOT.DS.'tmp'.DS.'logs'.DS.'error.log');
+	ini_set('error_log', PATH_LOGS.'/error.log');
 }
 
 
 
 
-require_once('/bootstrap.php');
+require_once(PATH_LIB.'/bootstrap.php');
 
 

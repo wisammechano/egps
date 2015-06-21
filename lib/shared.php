@@ -45,7 +45,7 @@ function routeURL($url) {
 
 /** Main Call Function **/
 
-$url = isset($_GET['url'])? $_GET['url']:'index';
+//$url = isset($_GET['url'])? $_GET['url']:null;
 
 function callHook() {
 	global $url;
@@ -88,12 +88,12 @@ function callHook() {
 /** Autoload any classes that are required **/
 
 function __autoload($className) {
-	if (file_exists(ROOT . DS . 'library' . DS . strtolower($className) . '.class.php')) {
-		require_once(ROOT . DS . 'library' . DS . strtolower($className) . '.class.php');
-	} else if (file_exists(ROOT . DS . 'application' . DS . 'controllers' . DS . strtolower($className) . '.php')) {
-		require_once(ROOT . DS . 'application' . DS . 'controllers' . DS . strtolower($className) . '.php');
-	} else if (file_exists(ROOT . DS . 'application' . DS . 'models' . DS . strtolower($className) . '.php')) {
-		require_once(ROOT . DS . 'application' . DS . 'models' . DS . strtolower($className) . '.php');
+	if (file_exists(PATH_LIB.DS. strtolower($className) . '.class.php')) {
+		require_once(PATH_LIB.DS. strtolower($className) . '.class.php');
+	} else if (file_exists(PATH_APP.DS. 'controllers' . DS . lcfirst($className) . '.php')) {
+		require_once(PATH_APP.DS. 'controllers' . DS . lcfirst($className) . '.php');
+	} else if (file_exists(PATH_APP.DS. 'models' . DS . strtolower($className) . '.php')) {
+		require_once(PATH_APP.DS. 'models' . DS . strtolower($className) . '.php');
 	} else {
 		/* Error Generation Code Here */
 	}
@@ -104,8 +104,6 @@ function __autoload($className) {
 function isBuggyIe() {
 	
     $ua = $_SERVER['HTTP_USER_AGENT'];
-	//echo "Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101 Firefox/38.0";
-	//echo "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)"
 	
 	// quick escape for non-IEs 
     if (0 !== strpos($ua, 'Mozilla/4.0 (compatible; MSIE ')
@@ -122,17 +120,18 @@ function isBuggyIe() {
 
 /** Get Required Files **/
 
-if(strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')!==false 
-																																|| strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')===false )
-																																{
-// do not compress
-}else{
-// can send GZIP compressed data
-isBuggyIe() || ob_start("ob_gzhandler");
+if(strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')!==false || strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')===false )
+                {
+                    // do not compress
+                }
+else
+{
+        // can send GZIP compressed data
+        isBuggyIe() || ob_start("ob_gzhandler");
 } 
 
 $cache = new Cache();
-$inflect = new Inflection();
+$inflect = new Inflect();
 
 unregisterGlobals();
 callHook();

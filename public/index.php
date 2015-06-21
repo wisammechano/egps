@@ -1,7 +1,7 @@
 <?php
 
 
-define('APP', 'EGPS');
+define('APP', 'MyAPP');
 define('APP_VER', '1.0.0');
 define('DEVELOPER', 'Wisam Naji');
 

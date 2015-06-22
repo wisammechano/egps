@@ -48,6 +48,16 @@ function routeURL($url) {
 	return ($url);
 }
 
+function redirect($url, $internal = true, $permanent = false)
+{
+	if(internal) $url = BASE_PATH . $url;
+    if (headers_sent() === false)
+    {
+    	header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
+    }
+
+    exit();
+}
 
 
 /** Main Call Function **/
@@ -55,8 +65,8 @@ function routeURL($url) {
 $url = isset($_GET['url'])? $_GET['url']:null;
 
 if (!authorizedUser()) {
-	$default['controller']	=	'authorization';
-	$default['action']		=	'login';
+	if($url != 'authorization/login')
+	redirect('/authorization/login');
 }
 
 

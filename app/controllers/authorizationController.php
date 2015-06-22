@@ -14,7 +14,10 @@ class AuthorizationController extends VanillaController {
 			$this->Authorization->where(array('username'=> $username));
 			$res = $this->Authorization->execute();
 			$hash = $res[0]['User']['password'];
-			if(password_verify($password, $hash)) echo 'Valid!';			
+			if(password_verify($password, $hash)) {
+				session_start();
+				
+			};			
 		}
 		//$this->Authorization->where('parent_id',$categoryId);
 		//$this->Category->showHasOne();
@@ -52,12 +55,13 @@ class AuthorizationController extends VanillaController {
 			$username = $_POST['username'];
 			$password = password_hash($_POST['password'], PASSWORD_BCRYPT, $options);
 			$email = $_POST['email'];
-			$this->Authorization->custom("insert into users set
+			$this->Authorization->query("insert into users set
 			ip='$ip',
 			username='$username',
 			password='$password',
 			email='$email',
 			added=now()");
+			
 		}
 	
 	}

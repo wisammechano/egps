@@ -60,6 +60,7 @@ class SQLQuery {
 	function query($query, $singleResult = 0) {
 
 		$res = $this->_db->query($query);
+		echo $this->_db->error;
 		if (preg_match("/select/i",$query)) {
 			$result = array();
 			$table = array();

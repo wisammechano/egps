@@ -8,6 +8,7 @@ THIS FILE CONTAINS ALL THE CONSTANTS FOR THE APPLICATION
 
 define('PATH_LIB', ROOT.'/lib');
 define('PATH_APP', ROOT.'/app');
+define('VIEWS', PATH_APP.'/views');
 define('PATH_PLUGINS', ROOT.'/plugins');
 define('PATH_DB', ROOT.'/db');
 define('PATH_CONFIG', ROOT.'/conf');
@@ -24,7 +25,7 @@ define('BASE_PATH', ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ?  
 
 //		DATABASE
 
-define('DB_NAME', 'egps');
+define('DB_NAME', 'test');
 define('DB_USER', 'root');
 define('DB_PASSWORD', '823311');
 define('DB_HOST', 'localhost');

@@ -5,6 +5,7 @@ class VanillaController {
 	protected $_controller;
 	protected $_action;
 	protected $_template;
+	protected $_model;
 
 	public $doNotRenderHeader;
 	public $render;

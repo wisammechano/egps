@@ -107,7 +107,8 @@ class Inflect
         'money',
         'rice',
         'information',
-        'equipment'
+        'equipment',
+        'authorization'
     );
     
     public static function pluralize( $string ) 

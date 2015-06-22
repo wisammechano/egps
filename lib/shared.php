@@ -18,6 +18,12 @@ function unregisterGlobals() {
     }
 }
 
+/** Authorization Check **/
+
+function authorizedUser() {
+	return 1;
+}
+
 /** Secondary Call Function **/
 
 function performAction($controller,$action,$queryString = null,$render = 0) {
@@ -43,9 +49,16 @@ function routeURL($url) {
 }
 
 
+
 /** Main Call Function **/
 
-//$url = isset($_GET['url'])? $_GET['url']:null;
+$url = isset($_GET['url'])? $_GET['url']:null;
+
+if (!authorizedUser()) {
+	$default['controller']	=	'authorization';
+	$default['action']		=	'login';
+}
+
 
 function callHook() {
 	global $url;

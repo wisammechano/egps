@@ -58,8 +58,8 @@ class UsersController extends VanillaController {
 			'username' => $_POST['username'],
 			'password' => password_hash($_POST['password'], PASSWORD_BCRYPT, $options),
 			'email' => $_POST['email']);
-			$this->_model->update($data);
-			$this->_model->where(array('id' => 2));
+			$this->_model->insert($data);
+			//$this->_model->where(array('id' => 2));
 			$this->_model->execute();
 		}
 	

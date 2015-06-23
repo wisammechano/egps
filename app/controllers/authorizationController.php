@@ -15,7 +15,7 @@ class AuthorizationController extends VanillaController {
 			$res = $this->Authorization->execute();
 			$hash = $res[0]['User']['password'];
 			if(password_verify($password, $hash)) {
-				session_start();
+				//session_start();
 				
 			};			
 		}

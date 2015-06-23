@@ -20,8 +20,15 @@ function unregisterGlobals() {
 
 /** Authorization Check **/
 
-function authorizedUser() {
-	return 1;
+function checkUser() {
+	session_start();
+	//echo session_id();
+	if (isset($_SESSION['userID']))
+	return true;
+	else {
+	//if($url != 'users/login')
+	redirect('/users/login');
+	}	
 }
 
 /** Secondary Call Function **/
@@ -51,10 +58,10 @@ function routeURL($url) {
 function redirect($url, $internal = true, $permanent = false)
 {
 	if(internal) $url = BASE_PATH . $url;
-    if (headers_sent() === false)
-    {
-    	header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
-    }
+    	if (headers_sent() === false)
+    	{
+    		header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
+    	}
 
     exit();
 }
@@ -63,11 +70,6 @@ function redirect($url, $internal = true, $permanent = false)
 /** Main Call Function **/
 
 $url = isset($_GET['url'])? $_GET['url']:null;
-
-if (!authorizedUser()) {
-	if($url != 'authorization/login')
-	redirect('/authorization/login');
-}
 
 
 function callHook() {

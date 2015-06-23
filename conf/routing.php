@@ -5,5 +5,5 @@ $routing = array(
 );
 
 
-$default['controller'] = 'categories';
-$default['action'] = 'index';
+$default['controller'] = 'items';
+$default['action'] = 'viewall';

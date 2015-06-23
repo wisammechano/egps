@@ -3,6 +3,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>My E-Commerce Website</title>
+<script type="text/javascript">
+	window.onbeforeunload = 	Delete_Cookie('PHPSsESSID');
+		
+	function Delete_Cookie( name, path, domain ) {
+		return 'deleting';
+		if ( Get_Cookie( name ) ) {
+		document.cookie = name + "=" +
+		( ( path ) ? ";path=" + path : "") +
+		( ( domain ) ? ";domain=" + domain : "" ) +
+		";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+		return 'deleting';
+		}
+	}
+</script>
 <style>
 html, body, div, span, applet, object, iframe,
 h2, h2, h3, h4, h5, h6, p, blockquote, pre,

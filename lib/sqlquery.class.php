@@ -48,20 +48,44 @@ class SQLQuery {
     	function select($data) {
     		$this->_query = 'SELECT '. $data.' from `'.$this->_table.'`';  
     	}
+    	
+    	function insert($data = array()) {
+    		$sql = 'INSERT INTO ' . $this->_table . ' SET ' ;
+    		foreach ($data as $field => $value) {
+    			$sql .= $field . ' = \'' . $value . '\',';
+    		}
+    		
+    		$sql = substr($sql, 0, -1);
+    		$this->_query = $sql;
+    	}
+    	
+    	function update($data = array()) {
+    		$sql = 'UPDATE ' . $this->_table .' SET ';
+    		foreach ($data as $field => $value) {
+    			$sql .= $field . ' = \'' . $value . '\',';
+    		}
+    		
+    		$sql = substr($sql, 0, -1);
+    		$this->_query = $sql;
+    	}
+    		
+    		
 
 	function execute() {
+		$bol = true;
 		$sql = $this->_query	. $this->_conditions ;
+		if(preg_match('/SELECT|SHOW|DESCRIBE|EXPLAIN/i', $sql)) $bol = false;
 		//echo $sql;
-		return $this->query($sql);
+		return ($bol ? $this->query($sql):$this->query($sql, false));
 	}
 	
     /** Custom SQL Query **/
 
-	function query($query, $singleResult = 0) {
+	function query($query, $bol = true) {
 
 		$res = $this->_db->query($query);
-		echo $this->_db->error;
-		if (preg_match("/select/i",$query)) {
+		//echo $this->_db->error;
+		if (!$bol) {
 			$result = array();
 			$table = array();
 			$field = array();
@@ -84,6 +108,7 @@ class SQLQuery {
 				}
 				array_push($result,$tempResults);
 			}
+			print_r($result);
 			$res->free();
 			return($result);
 		}

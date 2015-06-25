@@ -4,10 +4,12 @@ class Template {
 	protected $variables = array();
 	protected $_controller;
 	protected $_action;
+	//protected $_HTML;
 	
 	function __construct($controller,$action) {
 		$this->_controller = $controller;
 		$this->_action = $action;
+		//$this->_HTML = new HTML;
 	}
 
 	/** Set Variables **/
@@ -15,12 +17,14 @@ class Template {
 	function set($name,$value) {
 		$this->variables[$name] = $value;
 	}
+	
 
 	/** Display Template **/
 	
     function render($doNotRenderHeader = 0) {
 		
 		$html = new HTML;
+		//$E='$html->element';
 		extract($this->variables);
 		
 		if ($doNotRenderHeader == 0) {

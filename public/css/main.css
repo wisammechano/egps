@@ -1,0 +1,23 @@
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+}
+
+.header {
+    background-color: #FFF;
+    background-image: linear-gradient(#D9EFFA, #D9EFFA 25%, #FFF);
+    background-repeat: no-repeat;
+    border-top: 3px solid #08C;
+    padding: 20px 0px;
+    text-align: center;
+}
+
+.container {
+    padding: 20px 20px;
+    border: 1px solid rgba(180, 225, 220, 0.4);
+    position: relative;
+    max-width: 900px;
+    z-index: 1060;
+}

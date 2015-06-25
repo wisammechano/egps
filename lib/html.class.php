@@ -2,7 +2,7 @@
 
 class HTML {
 	private $js = array();
-
+	
 	function shortenUrls($data) {
 		$data = preg_replace_callback('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', array(get_class($this), '_fetchTinyUrl'), $data);
 		return $data;
@@ -34,12 +34,49 @@ class HTML {
 	}
 
 	function includeJs($fileName) {
-		$data = '<script type="text/javascript" src="'.BASE_PATH.'/js/'.$fileName.'.js"></script>';
+		$data = '<script type="text/javascript" src="'.BASE_PATH.'/js/'.$fileName.'.js"></script>' . PHP_EOL;
 		return $data;
 	}
 
 	function includeCss($fileName) {
-		$data = '<link rel="stylesheet" type="text/css" href="'.BASE_PATH.'/css/'.$fileName.'.css" />';
+		$data = '<link rel="stylesheet" type="text/css" href="'.BASE_PATH.'/css/'.$fileName.'.css" />' . PHP_EOL;
 		return $data;
 	}
+	
+	function E($element, $attributes = array(), $closeTag=true, $innerHTML='') {
+		$data = "<". $element;
+		if (!empty($attributes)) {
+			foreach($attributes as $attrib => $val) {
+				$data .= sprintf(' %s="%s"', $attrib, $val);
+			}
+		}
+		$data.= '>' .PHP_EOL;
+		if ($innerHTML != '') $data.=$innerHTML.PHP_EOL;
+		if($closeTag) $data.= '</'.$element.'>'.PHP_EOL;
+				
+		return $data;
+	}
+	
+	function block($data) {
+		$block = '';
+		foreach ($data as $elem => $attrib) {
+			$elem = preg_replace('@(-[\d]*)@', '', $elem);
+			$block .= '<' . $elem;
+			foreach($attrib as $att => $val) {
+				if ($att == 'label') {
+					$lbl = sprintf('<label id="%sLabel" for="%s" class="%s">%s</label>', $attrib['id'],$attrib['id'],$attrib['class'],$val).PHP_EOL;
+					$pos = strrpos($block, '<') ;
+					$block = substr_replace($block,$lbl, $pos, 0);
+					continue;
+				}
+				$block .= sprintf(' %s="%s"', $att, $val);
+			}
+			$block .= '>'.PHP_EOL;
+		}
+		preg_match('/^<([a-z0-9]+)+/m', $block, $pElem);
+		$block .= '</' . $pElem[1] . '>'.PHP_EOL;
+		return $block;
+	}
+						
+		
 }

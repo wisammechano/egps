@@ -70,12 +70,10 @@ function redirect($url, $internal = true, $permanent = false)
 /** Main Call Function **/
 
 $url = isset($_GET['url'])? $_GET['url']:null;
-
-
 function callHook() {
 	global $url;
 	global $default;
-
+	if(!is_null($url)) array_shift($_GET);
 	$queryString = array();
 
 	if (!isset($url)) {

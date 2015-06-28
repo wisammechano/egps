@@ -24,6 +24,7 @@ class Template {
     function render($doNotRenderHeader = 0) {
 		
 		$html = new HTML;
+		$ph = new Phrases;
 		//$E='$html->element';
 		extract($this->variables);
 		

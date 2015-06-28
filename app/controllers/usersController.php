@@ -3,24 +3,35 @@
 class UsersController extends VanillaController {
 	//var $model;
 	function beforeAction () {
-		//var_dump($this->model);
+		$this->_ph->setLang('en-us');
+		$this->_ph->setSection('error');
 	}
 	
-	function login($categoryId = null) {
+	function login() {
 		if (isset($_POST['loginform'])) {
 			$username = $_POST['username'];
+			$item = is_numeric($username)? 'eid':'username';
 			$password = $_POST['password'];
-			$this->_model->select('id, password');
-			$this->_model->where(array('username'=> $username));
+			$this->_model->select('id, username, eid, password, lang');
+			$this->_model->where(array($item => $username));
 			$res = $this->_model->execute();
-			$hash = $res[0]['User']['password'];
-			if(password_verify($password, $hash)) {
+			if($res) {
+				$hash = $res['password'];
+				if(password_verify($password, $hash)) {
 				session_start();
-				$_SESSION['userID'] = $res[0]['User']['id'];
-				$_SESSION['userName'] = $username;
+				$_SESSION['userID'] = $res['id'];
+				$_SESSION['userName'] = $res['username'];
+				$_SESSION['userEID'] = $res['eid'];
+				$_SESSION['lang'] = $res['lang']; //set language/////////////////
 				redirect('/');	
+				}
+				else {
+					$this->set('error', $this->_ph->Pr('wrongpassword'));
+				}
 			}
-			else echo 'Wrong Password'	;	
+			else $this->set('error', $this->_ph->Pr('wrongpassword'));
+			
+				
 		}
 
 	}
@@ -46,8 +57,65 @@ class UsersController extends VanillaController {
 		session_destroy();
 		redirect('/users/login');
 	}
-
+	function validate($wOEcho=false) { //wide validation///////////////////////////
+		$this->render=0;
+		if(!empty($_GET)) {
+			//print_r($_GET);
+			$item = key($_GET);
+			$value = $_GET[$item];
+			if(empty($value)) return;
+			$error = '';
+			$this->_model->select('id');
+			$this->_model->where(array($item => $value));
+			$res = $this->_model->execute();
+			if ($res) {
+				switch ($item) {
+					case ('username') :
+						$error = $this->_ph->Pr('wrongusername');
+						break;
+		
+					case ('eid') :
+						$error = $this->_ph->Pr('wrongemploymentid');
+						break;
+					
+					case ('email') :
+						$error = $this->_ph->Pr('wrongemail');
+						break;
+					
+					default :
+						$error = $this->_ph->Pr('unknownerror');
+						break;
+				}
+				$return = array('valid'=>!(bool)'false', 'msg' => $error);
+				$jsonRes = json_encode($return);
+				if (!$wOEcho) echo $jsonRes;
+				return false;
+			}
+			if (!$wOEcho) echo json_encode(array('valid' => 'true'));
+			return true;
+		}
+	}
 	function register() {
+		if(!isset($_POST['regform'])) {
+			$this->_model->from('departments');
+			$this->_model->select('id, name');
+			$depts = $this->_model->execute();
+			//print_r($depts);
+			$this->set('departments', $depts);
+			
+			$this->_model->from('positions');
+			$this->_model->select('id, name, title');
+			$this->_model->where('level > 4');
+			$positions=$this->_model->execute();
+			//print_r($positions);
+			$this->set('positions', $positions);
+			
+			$this->_model->from('groups');
+			$this->_model->select('id, name');
+			$groups=$this->_model->execute();
+			//print_r($groups);
+			$this->set('groups', $groups);			
+		}
 		if (isset($_POST['regform'])) {
 			$options = [
     						'cost' => 12,
@@ -58,9 +126,9 @@ class UsersController extends VanillaController {
 			'username' => $_POST['username'],
 			'password' => password_hash($_POST['password'], PASSWORD_BCRYPT, $options),
 			'email' => $_POST['email']);
-			$this->_model->insert($data);
+			//$this->_model->insert($data);
 			//$this->_model->where(array('id' => 2));
-			$this->_model->execute();
+			//$this->_model->execute();
 		}
 	
 	}

@@ -1,0 +1,9 @@
+$(document).ready(function() {
+	var i = 1
+	var row = $("tbody").html()
+	$("#insRow").click(function() {
+		i++;
+		//var row = '<tr> <td>'+ i +'</td> <td> <input type="text" id="item-name"> </td> <td> <input type="text" id="item-tag"> </td> <td> <input type="text" id="alarm-sp"> </td> <td> <input type="text" id="unit"> </td> </tr>';
+		$("tbody").append(row);
+	}	);
+});

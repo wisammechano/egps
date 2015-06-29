@@ -6,9 +6,11 @@ class VanillaController {
 	protected $_action;
 	protected $_template;
 	protected $_model;
+	protected $_ph;
 
 	public $doNotRenderHeader;
 	public $render;
+	public $renderType;
 
 	function __construct($controller, $action) {
 		
@@ -22,7 +24,7 @@ class VanillaController {
 		$this->render = 1;
 		$this->_model = new $model;
 		$this->_template = new Template($controller,$action);
-
+		$this->_ph = new Phrases;
 	}
 
 	function set($name,$value) {

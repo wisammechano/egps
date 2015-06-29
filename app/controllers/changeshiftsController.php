@@ -19,6 +19,15 @@ class ChangeshiftsController extends VanillaController {
 		}
 	}
 	
+	function check()
+		if(isset($_GET['term']) {
+			$users = new usersController;
+			is_numeric($_get['term'])? $item='eid':$item='un'	;
+			$users->_model->select('id, un, eid');
+			$users->_model->where('')
+			
+			
+		}
 	
 	function view() {
 		

@@ -1,0 +1,71 @@
+<!Doctype html>
+<html>
+	<head>
+		<title>Hello</title>
+		<link rel="stylesheet" href="css/css.css">
+		<script type="text/javascript" src="js/jq/jquery.js"></script>
+		<script type="text/javascript" src="js/js.js"></script>
+	</head>
+	<body>
+		<h1>
+			Edit Log Sheets
+		</h1>
+		<p>
+			Please use the interactive buttons bellow to creat the log sheet
+		</p>
+		<input type="button" value="Insert Table" id="insTable">
+		<input type="button" value="Insert Heading Row" id="insHRow">
+		<input type="button" value="Insert Regular Row" id="insRow">
+		<input type="button" value="Insert Cell" id="insCell">
+		<input type="button" value="Delete Table" id="delTable">
+		<input type="button" value="Delete Heading Row" id="delHRow">
+		<input type="button" value="Delete Regular Row" id="delRow">
+		<input type="button" value="Delete Cell" id="delCell">
+		<table id="mainTable">
+			<thead>
+				<tr>
+					<th colspan=100%>
+						<input type="text" width=100% style="text-align:center; text-style:strong;">
+					</th>
+				</tr>
+				<tr>
+					<th>
+						ID
+					</th>
+					<th>
+						Item Name
+					</th>
+					<th>
+						Item Tag
+					</th>
+					<th>
+						Alarm SP
+					</th>
+					<th>
+						Unit
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						1
+					</td>
+					<td>
+						<input type="text" id="item-name">
+					</td>
+					<td>
+						<input type="text" id="item-tag">
+					</td>
+					<td>
+						<input type="text" id="alarm-sp">
+					</td>
+					<td>
+						<input type="text" id="unit">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</body>
+</html>

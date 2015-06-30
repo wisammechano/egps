@@ -1,0 +1,54 @@
+auth actions
+
+/modules/actions
+
+modules are connected
+
+departments can connect by messages
+
+department heads, deputies can have publications
+
+users have messages
+
+userpanel ->
+	changeshifts -> viewall
+			request
+			approve
+			reject
+			history
+	vacations    -> view
+			request
+			cancel
+			history
+
+	messages     -> index
+			view
+			delete
+			send
+	settings ->	picture
+			details
+
+publications ->
+		view
+		view all
+		submit
+		delete
+		history
+
+logsheet     ->
+		
+
+LOTO	->
+
+analysis ->
+
+work requests ->
+
+work orders ->
+
+users management->
+
+id generator ->
+
+ceo ->
+

@@ -10,72 +10,78 @@
 <form id="regForm" class="form-horizontal validate" name="registrationform" method="post" action="" novalidate="novalidate">
 	<input type="hidden" name="regform" value="regform">
 	<div class="form-group"></div>
-	
-	<?php $c="";if(isset($error)): ?>
-	<div class="alert alert-danger alert-sm" role="alert"><?php echo $error?></div>
-	<?php $c="has-error"; endif; ?>
-	
+	<div class="form-group">
+	<?php $c="";if(!empty($errors)): ?>
+		<div class="alert alert-danger alert-sm" role="alert">
+			<ul class="">
+				<?php foreach($errors as $item => $error):?>
+				<li><?php echo $item . ': '.$error;?></li>
+				<?php endforeach;?>
+			</ul>
+		</div>
+	<?php $c="has-error"; endif; ?>	
+	</div>
 	<div class="form-group required">
 		<label for="inputFName" class="col-sm-5 control-label"><?php $ph->P('fname');?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" name="fname" id="inputFName" autocomplete="off" placeholder="<?php $ph->P('fname');?>">
+			<input type="text" class="form-control" name="fname" id="inputFName" autocomplete="off" <?php $this->fill('fname');?> placeholder="<?php $ph->P('fname');?>">
 		</div>
 	</div>
 	
 	<div class="form-group required">
 		<label for="inputLName" class="col-sm-5 control-label"><?php $ph->P('lname');?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" name="lname" id="inputLName" autocomplete="off" placeholder="<?php $ph->P('lname');?>">
+			<input type="text" class="form-control" name="lname" id="inputLName" autocomplete="off" <?php $this->fill('lname');?> placeholder="<?php $ph->P('lname');?>">
 		</div>
 	</div>
 		
 	<div class="form-group check has-feedback required">
 		<label for="inputUsername" class="col-sm-5 control-label"><?php $ph->P('username');?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" name="username" id="inputUsername" autocomplete="off" placeholder="<?php $ph->P('username');?>">
+			<input type="text" class="form-control" name="username" id="inputUsername" autocomplete="off" <?php $this->fill('username');?> placeholder="<?php $ph->P('username');?>">
 		</div>
 	</div>
 
 	<div class="form-group required">
 		<label for="inputPassword" class="col-sm-5 control-label"><?php $ph->P('password');?></label>
 		<div class="col-sm-7">
-			<input type="password" class="form-control" name="password" id="inputPassword" placeholder="<?php $ph->P('password');?>">
+			<input type="password" class="form-control" name="password" id="inputPassword" <?php $this->fill('password');?> placeholder="<?php $ph->P('password');?>">
 		</div>
 	</div>
 	
 	<div class="form-group required">
 		<label for="inputPasswordC" class="col-sm-5 control-label"><?php $ph->P('passwordconfirm');?></label>
 		<div class="col-sm-7">
-			<input type="password" class="form-control" name="passwordC" id="inputPasswordC" placeholder="<?php $ph->P('passwordconfirm');?>">
+			<input type="password" class="form-control" name="passwordC" id="inputPasswordC" <?php $this->fill('passwordC');?> placeholder="<?php $ph->P('passwordconfirm');?>">
 		</div>
 	</div>
 	<hr class="hr-condensed">
 	<div class="form-group required">
 		<label for="inputBDate" class="col-sm-5 control-label"><?php $ph->P('bday');?></label>
 		<div class="col-sm-7">
-			<input type="date" class="form-control" name="birthdate" id="inputBDate" autocomplete="off" placeholder="<?php $ph->P('bday');?>">
+			<input type="tel" style="width:130px;" class="form-control" name="birthdate" id="inputBDate" <?php $this->fill('birthdate');?> pattern="[0-9]*" maxlength="14" autocomplete="off" placeholder="DD / MM / YYYY">
 		</div>
 	</div>		
 
 	<div class="form-group check has-feedback required">
 		<label for="inputEmID" class="col-sm-5 control-label"><?php $ph->P('employmentID');?></label>
 		<div class="col-sm-7">
-			<input type="tel" class="form-control" name="employmentID" id="inputEmID" autocomplete="off" placeholder="<?php $ph->P('employmentID');?>">
+			<input type="tel" class="form-control" name="employmentID" id="inputEmID" autocomplete="off" <?php $this->fill('employmentID');?> placeholder="<?php $ph->P('employmentID');?>">
 		</div>
 	</div>	
 	
 	<div class="form-group check has-feedback required">
 		<label for="inputEmail" class="col-sm-5 control-label"><?php $ph->P('email');?></label>
 		<div class="col-sm-7">
-			<input type="email" class="form-control" name="email" id="inputEmail" autocomplete="off" placeholder="<?php $ph->P('email');?>">
+			<input type="email" class="form-control" name="email" id="inputEmail" autocomplete="off" <?php $this->fill('email');?> placeholder="<?php $ph->P('email');?>">
 		</div>
 	</div>	
 	
-	<input type="hidden" name="mobile" id="mobileHidden" value="">
+	<!--<input type="hidden" name="mobile" id="mobileHidden" value="">-->
 	<div class="form-group required">
 		<label for="inputMobile" class="col-sm-5 control-label"><?php $ph->P('mobile');?></label>
 		<div class="col-sm-7">
-			<input type="tel" class="form-control" name="mobile" maxlength="20" id="inputMobile" autocomplete="off" placeholder="<?php $ph->P('mobile');?>">
+			<input type="tel" class="form-control" name="mobile" maxlength="20" id="inputMobile" autocomplete="off" <?php $this->fill('mobile');?> placeholder="<?php $ph->P('mobile');?>">
 
 <!--			<div class="input-group">
 opcode			<?php //if($rtl): ?>
@@ -101,7 +107,7 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputDepartment" class="col-sm-5 control-label"><?php $ph->P('department')?></label>
 		<div class="col-sm-7">
-				<select id="inputDepartment" class="selectpicker form-control" name="department">
+				<select id="inputDepartment" class="selectpicker form-control" name="department" <?php $this->fill('department');?>>
 				<option value="">Please Select</option>
 				<?php foreach($departments as $dept): ?>
 				<option value="<?php echo $dept['id'];?>"><?php echo $dept['name'];?></option>
@@ -113,7 +119,7 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputPosition" class="col-sm-5 control-label"><?php $ph->P('position')?></label>
 		<div class="col-sm-7">
-				<select id="inputPosition" class="selectpicker form-control" name="position">
+				<select id="inputPosition" class="selectpicker form-control" name="position" <?php $this->fill('position');?>>
 				<option value="">Please Select</option>
 				<?php foreach($positions as $pos): ?>
 				<option value="<?php echo $pos['id'];?>"><?php echo $pos['name'] . ' - ' . $pos['title'];?></option>
@@ -125,7 +131,7 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputGroup" class="col-sm-5 control-label"><?php $ph->P('group')?></label>
 		<div class="col-sm-7">
-				<select id="inputGroup" class="selectpicker form-control" name="group">
+				<select id="inputGroup" class="selectpicker form-control" name="group"<?php $this->fill('group');?>>
 				<option value="">Please Select</option>
 				<?php foreach($groups as $grp): ?>
 				<option value="<?php echo $grp['id'];?>"><?php echo $grp['name'];?></option>
@@ -137,7 +143,7 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputCountry" class="col-sm-5 control-label"><?php $ph->P('country')?></label>
 		<div class="col-sm-7">
-				<select id="inputCountry" class="selectpicker form-control" name="country">
+				<select id="inputCountry" class="selectpicker form-control" name="country" <?php $this->fill('country');?>>
 				<option value="">Please Select</option>
 				<?php $countries = unserialize(COUNTRIES); foreach($countries as $code => $name): ?>
 				<option value="<?php echo $code;?>"><?php echo $name;?></option>
@@ -149,7 +155,7 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required">
 		<label for="inputAddress" class="col-sm-5 control-label"><?php $ph->P('address');?></label>
 		<div class="col-sm-7">
-			<input type="text" class="form-control" name="address" id="inputAddress" autocomplete="off" placeholder="<?php $ph->P('address');?>">
+			<input type="text" class="form-control" name="address" id="inputAddress" autocomplete="off" <?php $this->fill('address');?> placeholder="<?php $ph->P('address');?>">
 		</div>
 	</div>	
 		

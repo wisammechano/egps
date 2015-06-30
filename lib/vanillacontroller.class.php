@@ -7,6 +7,7 @@ class VanillaController {
 	protected $_template;
 	protected $_model;
 	protected $_ph;
+	protected $_hasError;
 
 	public $doNotRenderHeader;
 	public $render;
@@ -30,9 +31,14 @@ class VanillaController {
 	function set($name,$value) {
 		$this->_template->set($name,$value);
 	}
+	
+	function setError($name, $value) {
+		$this->_template->setError($name, $value);
+		$this->_hasError = true;
+	}
 
 	function __destruct() {
-		if ($this->render) {
+		if ($this->render && is_object($this->_template)) {
 			$this->_template->render($this->doNotRenderHeader);
 		}
 	}

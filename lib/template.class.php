@@ -2,6 +2,7 @@
 class Template {
 	
 	protected $variables = array();
+	protected $_errors = array();
 	protected $_controller;
 	protected $_action;
 	//protected $_HTML;
@@ -17,12 +18,23 @@ class Template {
 	function set($name,$value) {
 		$this->variables[$name] = $value;
 	}
+	/** Set Errors in forms */
 	
+	function setError($name,$value) {
+		$this->_errors[$name] = $value;
+	}
+	
+	function fill($val, $array = array()) {
+		if(empty($array) && !empty($_POST)) $array = $_POST;
+		if(!empty($array)){
+			echo 'value="' . $array[$val] . '" ';
+		}
+	}
 
 	/** Display Template **/
 	
     function render($doNotRenderHeader = 0) {
-		
+		$errors = $this->_errors;
 		$html = new HTML;
 		$ph = new Phrases;
 		//$E='$html->element';

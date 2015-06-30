@@ -1,9 +1,14 @@
 <?php $ph->setSection(__FILE__);?>
 <div class="login-box">
-<?php $c="";if(isset($error)): ?>
-	<div class="alert alert-danger alert-sm" role="alert"><?php echo $error?></div>
-<?php $c="has-error"; endif; 
-?>
+<?php $c="";if(!empty($errors)): ?>
+	<div class="alert alert-danger alert-sm" role="alert">
+		<ul class="">
+			<?php foreach($errors as $item => $error):?>
+			<li><?php echo $item . ': '.$error;?></li>
+			<?php endforeach;?>
+		</ul>
+	</div>
+<?php $c="has-error"; endif; ?>
 	<form id="loginForm" class="validate" name="loginform" method="post" action="login">
 		<input type="hidden" name="loginform" value="loginform">
 		<div class="form-group <?php echo $c; ?> form-group-lg required">

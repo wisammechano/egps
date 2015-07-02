@@ -56,7 +56,7 @@ class UsersController extends VanillaController {
 		session_destroy();
 		redirect('/users/login');
 	}
-	function validate($items = array(), $wOEcho=false) { //wide validation///////////////////////////
+	function validdate($items = array(), $wOEcho=false) { //wide validation///////////////////////////
 		
 		if(!empty($items)) {
 			//print_r($_GET);
@@ -104,48 +104,69 @@ class UsersController extends VanillaController {
 	
 	}
 	
+	function validate($items = array(), $ajax=true) {
+		$error = '';
+		// Handle Ajax Requests //
+		if($ajax && empty($items)){
+			$this->render = 0;	
+			if(!empty($_GET)) $items = $_GET;
+			else {
+				$error = $this->_ph->Pr('ajaxerror');
+				$return=json_encode(array('valid'=>false, 'msg'=>$error));
+				echo $return;
+				return false;
+			}
+					
+		}
+		
+		$item = key($items);
+		$value = $items[$item];
+		
+		if(empty($value)) return false;
+		$item=strtolower($item);
+		$value=strtolower($value);
+		// Scheme Validation //
+		$patterns = array(	'username' => '/^(?:[a-z][a-z0-9]*(?:([._])(?!\1)[a-z0-9]+)*){5,20}$/i',
+							'email' => '/^[a-zA-Z0-9_.-]+\@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}+$/',
+							'employmentid' => '/^[0-9]{1,5}$/',
+							'mobile' => '/^\+?[0-9]{10,20}$/'
+							);
+		if(!array_key_exists($item, $patterns)) return false;
+		if(!preg_match($patterns[$item], $value)) {
+			//echo 'preg';
+			$error = $this->_ph->Pr('invalid'.$item);
+			$return= array('valid'=>false, 'msg'=>$error);
+			if($ajax) {echo json_encode($return); return false;}
+			else return $error;
+		}
+		
+		$this->_model->select('id');
+		$this->_model->where(array($item => $value));
+		$res = $this->_model->execute();
+		if($res) {
+			$error = $this->_ph->Pr('wrong'.$item);
+			$return= array('valid'=>false, 'msg'=>$error);
+			if($ajax) {echo json_encode($return); return false;}
+			else return $error;
+		}
+		$return = array('valid' => true);
+		if($ajax) {echo json_encode($return); return true;}
+		else return true;		
+	}
 	
 	function register() {
-		if(!isset($form)) $form = array('fname' 		=> '',
-										'lname' 		=> '',
-										'username'		=> '',
-										'password'		=> '',
-										'passwordC'		=> '',
-										'bdate'			=> '',
-										'eid'			=> '',
-										'email'			=> ''
-		);
-		if(!isset($_POST['regform']) || $this->_hasError == true) {
-			$this->_model->from('departments');
-			$this->_model->select('id, name');
-			$depts = $this->_model->execute();
-			//print_r($depts);
-			$this->set('departments', $depts);
-			
-			$this->_model->from('positions');
-			$this->_model->select('id, name, title');
-			$this->_model->where('level > 4');
-			$positions=$this->_model->execute();
-			//print_r($positions);
-			$this->set('positions', $positions);
-			
-			$this->_model->from('groups');
-			$this->_model->select('id, name');
-			$groups=$this->_model->execute();
-			//print_r($groups);
-			$this->set('groups', $groups);			
-		}
 		if (isset($_POST['regform'])) {
+			
 			$options = [
     						'cost' => 12,
     						'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
 						];
 			$fname				=ucwords($_POST['fname']);	
 			$lname				=ucwords($_POST['lname']);			
+			
 			$username			= strtolower($_POST['username']);
-			$unPattern			= '/^(?:[a-z][a-z0-9]*(?:([._])(?!\1)[a-z0-9]+)*){5,20}$/i';
-			if(!preg_match($unPattern, $username))  $this->setError('Username', $this->_ph->Pr('invalidusername'));
-			if(!$this->validate(array('username' => $username))) $this->setError('Username', $this->_ph->Pr('wrongusername'));
+			$valid = $this->validate(array('username' => $username), 0);
+			if($valid !== true) $this->setError('Username', $valid);
 			
 			$password			= $_POST['password'];
 			$password_confirm 	= $_POST['passwordC'];
@@ -155,13 +176,15 @@ class UsersController extends VanillaController {
 			$bdate				= implode('-',$bdate);
 			$bdate 				= date_create($bdate);
 			if(!$bdate) $this->setError('Birthdate', $this->_ph->Pr('invaliddate'));
-			if($bdate) $bdate				= date_format($bdate, 'd-m-Y');
+			if($bdate) $bdate				= date_format($bdate, 'Y-m-d');
 			
 			$eid 			= $_POST['employmentID'];
-			if(!$this->validate(array('employmentid' => $eid))) $this->setError('Employment ID', $this->_ph->Pr('wrongemploymentid'));
+			$valid = $this->validate(array('employmentid' => $eid), 0);
+			if($valid !== true) $this->setError('Employment ID', $valid);
 			
 			$email 			= strtolower($_POST['email']);
-			if(!$this->validate(array('email' => $email))) $this->setError('Email', $this->_ph->Pr('wrongemail'));
+			$valid = $this->validate(array('email' => $email), 0);
+			if($valid !== true) $this->setError('Email', $valid);
 			
 			$mobile			= $_POST['mobile'];
 			
@@ -173,6 +196,7 @@ class UsersController extends VanillaController {
 			
 			$origin			= $_POST['country'];
 			$address			= $_POST['address'];
+			
 			
  			if($this->_hasError == false) { 
 				$data = array(
@@ -191,10 +215,28 @@ class UsersController extends VanillaController {
 				'address'		=> $address);
 				$this->_model->insert($data);
 				//$this->_model->where(array('id' => 2));
+				
 				echo $this->_model->execute();
 			}
  		}
-	
+		$this->_model->from('departments');
+		$this->_model->select('id, name');
+		$depts = $this->_model->execute();
+		//print_r($depts);
+		$this->set('departments', $depts);
+		
+		$this->_model->from('positions');
+		$this->_model->select('id, name, title');
+		$this->_model->where('level > 4');
+		$positions=$this->_model->execute();
+		//print_r($positions);
+		$this->set('positions', $positions);
+		
+		$this->_model->from('groups');
+		$this->_model->select('id, name');
+		$groups=$this->_model->execute();
+		//print_r($groups);
+		$this->set('groups', $groups);	
 	}
 	
 	

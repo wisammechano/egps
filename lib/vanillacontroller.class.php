@@ -7,7 +7,7 @@ class VanillaController {
 	protected $_template;
 	protected $_model;
 	protected $_ph;
-	protected $_hasError;
+	protected $_hasError =0;
 
 	public $doNotRenderHeader;
 	public $render;

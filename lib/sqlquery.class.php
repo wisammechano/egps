@@ -99,7 +99,7 @@ class SQLQuery {
 		//var_dump($res);
 		//print_r($res->fetch_all());
 		//echo $query;
-		//echo $this->_db->error;
+		echo $this->_db->error;
 		if($this->_db->error) return $this->_db->error;
 		if (!$bol) {
 			if($singleResult) {

@@ -24,10 +24,15 @@ class Template {
 		$this->_errors[$name] = $value;
 	}
 	
-	function fill($val, $array = array()) {
+	function fill($item, $select = 0, $val = null, $array = array()) {
 		if(empty($array) && !empty($_POST)) $array = $_POST;
 		if(!empty($array)){
-			echo 'value="' . $array[$val] . '" ';
+			if ($select && !is_null($val)) {
+				$ret = $val === $array[$item]? 'selected':'';
+				echo $ret;
+				return;
+			}
+			echo 'value="' . $array[$item] . '" ';
 		}
 	}
 

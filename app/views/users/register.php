@@ -107,10 +107,10 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputDepartment" class="col-sm-5 control-label"><?php $ph->P('department')?></label>
 		<div class="col-sm-7">
-				<select id="inputDepartment" class="selectpicker form-control" name="department" <?php $this->fill('department');?>>
+				<select id="inputDepartment" class="selectpicker form-control" name="department">
 				<option value="">Please Select</option>
 				<?php foreach($departments as $dept): ?>
-				<option value="<?php echo $dept['id'];?>"><?php echo $dept['name'];?></option>
+				<option value="<?php echo $dept['id'];?>" <?php $this->fill('department', 1, $dept['id']);?>><?php echo $dept['name'];?></option>
 				<?php endforeach; ?>
 				</select>
 		</div>
@@ -119,10 +119,10 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputPosition" class="col-sm-5 control-label"><?php $ph->P('position')?></label>
 		<div class="col-sm-7">
-				<select id="inputPosition" class="selectpicker form-control" name="position" <?php $this->fill('position');?>>
+				<select id="inputPosition" class="selectpicker form-control" name="position">
 				<option value="">Please Select</option>
 				<?php foreach($positions as $pos): ?>
-				<option value="<?php echo $pos['id'];?>"><?php echo $pos['name'] . ' - ' . $pos['title'];?></option>
+				<option value="<?php echo $pos['id'];?>" <?php $this->fill('position', 1, $pos['id']);?>><?php echo $pos['name'] . ' - ' . $pos['title'];?></option>
 				<?php endforeach; ?>
 				</select>
 		</div>
@@ -131,10 +131,10 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputGroup" class="col-sm-5 control-label"><?php $ph->P('group')?></label>
 		<div class="col-sm-7">
-				<select id="inputGroup" class="selectpicker form-control" name="group"<?php $this->fill('group');?>>
+				<select id="inputGroup" class="selectpicker form-control" name="group">
 				<option value="">Please Select</option>
 				<?php foreach($groups as $grp): ?>
-				<option value="<?php echo $grp['id'];?>"><?php echo $grp['name'];?></option>
+				<option value="<?php echo $grp['id'];?>" <?php $this->fill('group', 1, $grp['id']);?>><?php echo $grp['name'];?></option>
 				<?php endforeach; ?>
 				</select>
 		</div>
@@ -143,10 +143,10 @@ opcode			<?php //if($rtl): ?>
 	<div class="form-group required"> 
 		<label for="inputCountry" class="col-sm-5 control-label"><?php $ph->P('country')?></label>
 		<div class="col-sm-7">
-				<select id="inputCountry" class="selectpicker form-control" name="country" <?php $this->fill('country');?>>
+				<select id="inputCountry" class="selectpicker form-control" name="country">
 				<option value="">Please Select</option>
 				<?php $countries = unserialize(COUNTRIES); foreach($countries as $code => $name): ?>
-				<option value="<?php echo $code;?>"><?php echo $name;?></option>
+				<option value="<?php echo $code;?>"  <?php $this->fill('country', 1, $code);?>><?php echo $name;?></option>
 				<?php endforeach; ?>
 				</select>
 		</div>

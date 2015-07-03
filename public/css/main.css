@@ -16,7 +16,7 @@ cursor: pointer;
     text-align: center;
 }
 .wrapper {
-	min-height: 100%;
+	min-height: 97%;
 	height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
 	height: 100%;
 	margin: 0 auto -3em;
@@ -68,6 +68,13 @@ cursor: pointer;
 	border: 1px solid transparent;
 	border-radius: 4px;
 	margin-bottom: 30px;
+}
+.has-success input {
+	background-color: #DFF0D8;
+}
+
+.has-error input {
+	background-color: #F2DEDE;
 }
 .dropdown-menu {
 min-width:auto;

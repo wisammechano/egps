@@ -1,100 +1,91 @@
 $(document).ready( function() {
-	$('div.check').find("input").blur(function() {
-		var item = $(this).prop('name');
-		var val = $(this).prop('value');
-		var id = '#'+ $(this).prop('id');
-		if(val !== '') {
-			var url = './validate?' + item + '=' + val;
-			$.getJSON(url, function(result) {
-				if (result.valid == false) {
-					if(($(id).parent().find('.glyphicon').length > 0)) {
-						$(id).parent().find('.glyphicon').remove();
-					}
-					if($(id).parent().find('.error').length === 0) {
-						element = '<span class="error"><small>' + result.msg + '</small></span>';
-						icon = '<span class="glyphicon glyphicon-remove form-control-feedback"></span>';
-						$(id).parents('div.check').addClass('has-error').addClass('nooo');
-						$(id).after(icon);
-						$(id).after(element);
-					}
-				}
-				else {
-					$(id).parents('div.check').removeClass('has-error');
-					$(id).parent().find('.error, .glyphicon').remove();
-					icon = '<span class="glyphicon glyphicon-ok form-control-feedback"></span>';
-					$(id).parents('div.check').addClass('has-success');
-					$(id).after(icon);
-				};
-			});
-		}
-	});
-	$('form.validate').submit(function (e) {
-		
-		var errors = $(this).find('div.has-error');
-		if(!validate(this) || errors.length ) {
-			sleep(500);
-			e.preventDefault();
-		};
-	});
-//	$('#inputMobileN').blur(function() {
-//		var mobile = '+964';
-//		var opCode = $('#inputMobOp').html();
-//		if (!IsNumeric(opCode)) {
-//			$('#inputMobOp').addClass('error'); 
-//		}
-//		opCode = opCode.slice(1);
-//		//alert (opCode);
-//		mobile += opCode + this.value;
-//		$('#mobileHidden').val(mobile);
-//	});		
-	$('input[type="tel"]').forceNumeric();
-	$(function() {
-		var d = new Date(1990 , 10, 28);
-		$( "#inpvutBDate" ).datepicker({
-							showAnim: "slideDown",
-							dateFormat: "dd M, yy", 
-     						changeMonth: true,
-     						changeYear: true,
-     						yearRange: "c-50:c-10",
-     						defaultDate: d
-     						});
-	});	
-	$('#inputBDate').formatDate("dd/mm/yyyy");
+	$('form.validate').validateInput(); //Validate the form
+	$('input[type="tel"]').forceNumeric(); //Force user to input numbers
+	$('input[type="date"]').formatDate("dd/mm/yyyy"); // format the birthdate field
 });
 
-function validate(form) {
-	var items = $(form).find("div.required input, select").filter(function() { return this.value == ""; });
-	//alert($items.length);
-	$("div.has-error").not("div.nooo").removeClass('has-error');
-	if(items.length > 0){
-		for (i=0; i<items.length; i++) {
-			var item = items.eq(i);
-			item.parents('div.required').addClass('has-error');
-			i===0 ? item.focus(): false;				
-		};
-		return false;
-	}
-	else {
-		return true;
+// Validate Forms
+(function ( $ ) {
+	jQuery.fn.validateInput = function () {
+		return this.each( function() {
+			//Submit Handler
+			$(this).submit(function (e){
+				//Empty Checks
+				var items = $(this).find("div.required input, select")
+				var empty = items.filter(function() { return this.value=='';});
+				var filled = items.filter(function() { return this.value!='';});
+				if(empty.length > 0){
+					for (i=0; i<empty.length; i++) {
+						var item = empty.eq(i);
+						item.parents('div.required').addClass('has-error').addClass('empty-field');
+						i===0? item.focus():{}
+					}
+				};
+				if(filled.length > 0){
+					for (i=0; i<filled.length; i++) {
+						var item = filled.eq(i);
+						item.parents("div.required")
+						.not('div.invalid')
+						.removeClass('has-error')
+						.removeClass('empty-field')
+						.addClass('has-success');
+					}
+				};
+				
+				//Error Checks
+				var error = $(this).find("div.has-error");
+				if(error.length > 0) e.preventDefault();
+			}); //Submit Handler
+			
+			//AJAX Checks
+			var checks = $(this).find('div.check input');
+			checks.blur(function(){
+				var item = $(this).prop('name');
+				var val = $(this).prop('value');
+				var id = '#'+ $(this).prop('id');
+				var url = './validate?' + item + '=' + val;
+				$.getJSON(url, function(result) {
+					var valid=result.valid
+					var error = !valid? result.msg:false;
+					if(!valid){
+						$(id).parents('div.check')
+						.addClass('has-error')
+						.addClass('invalid')
+						.removeClass('empty-field')
+						.removeClass('has-success');
+						if($(id).next('.error').length > 0) {
+							$(id).next('.error').remove();
+							$(id).after('<span class="error"><small>' + error + '</small></span>');
+						}
+						else $(id).after('<span class="error"><small>' + error + '</small></span>');
+					}
+					else {
+						$(id).parents('div.check')
+						.addClass('has-success')
+						.addClass('valid')
+						.removeClass('empty-field')
+						.removeClass('has-error')
+						.removeClass('invalid');
+						$(id).next('.error').remove()
+					}
+				});
+			}); // AJAX Checks
+			
+			//Remove EmptyField
+			var empty = $('div.empty-field, input');
+			empty.keyup(function () {
+				if (this.value.length > 0){
+					$(this).parents("div.empty-field")
+					.not('div.invalid')
+					.removeClass('has-error')
+					.removeClass('empty-field');
+				}
+			});
+		}); //Each Iterator
 	};
-};
+} ( jQuery ));
 
-function sleep( sleepDuration ){
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
-}
-
-function IsNumeric(input)
-{
-    return (input - 0) == input && (''+input).trim().length > 0;
-}
-/*
-function IsEmail(email) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-  var regex2 = /^[a-zA-Z0-9_.+-]+\@[a-zA-Z0-9-]+\.+[a-zA-Z0-9]{2,4}+$/;
-  return regex.test(email);
-};
-*/
+// Force Numeric
 (function ( $ ) {
 	jQuery.fn.forceNumeric = function () {
 		return this.each(function () {
@@ -122,6 +113,7 @@ function IsEmail(email) {
 	};
 }( jQuery ));
 
+// Format Dates
 (function ($) {
     $.fn.formatDate = function (format) {
         var months = { '1': '01', '2': '02', '3': '03', '4': '04', '5': '05', '6': '06', '7': '07', '8': '08', '9': '09', '10': '10',
@@ -280,7 +272,11 @@ function IsEmail(email) {
                         formattedDate += m;
                     }
                 }
-            } else if (dob.length == 5) {
+            } else if (dob.length == 6) {
+				if(dob.slice(5,6) > 1) {
+					var m = getMonth(dob.slice(5,6));
+					formattedDate = dob.slice(0,5) + m + " / ";
+				}
                 // day has been formated
                 // nothing to do
             } else if (dob.length == 10) {
@@ -310,6 +306,18 @@ function IsEmail(email) {
 
 
 /*
+
+	$(function() {
+		var d = new Date(1990 , 10, 28);
+		$( "#inpvutBDate" ).datepicker({
+							showAnim: "slideDown",
+							dateFormat: "dd M, yy", 
+     						changeMonth: true,
+     						changeYear: true,
+     						yearRange: "c-50:c-10",
+     						defaultDate: d
+     						});
+	});	
 (function ( $ ) {
 	$.fn.validate = function ( options ) {
 		var settings = $.extend({

@@ -122,12 +122,17 @@ class UsersController extends VanillaController {
 		$item = key($items);
 		$value = $items[$item];
 		
-		if(empty($value)) return false;
+		if(empty($value)) {
+			$error = $this->_ph->Pr('emptyvalue');
+			$return= array('valid'=>false, 'msg'=>$error);
+			if($ajax) {echo json_encode($return); return false;}
+			else return $error;
+		}
 		$item=strtolower($item);
 		$value=strtolower($value);
 		// Scheme Validation //
 		$patterns = array(	'username' => '/^(?:[a-z][a-z0-9]*(?:([._])(?!\1)[a-z0-9]+)*){5,20}$/i',
-							'email' => '/^[a-zA-Z0-9_.-]+\@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}+$/',
+							'email' => '/^[a-z]+[0-9_.-]*[a-z0-9]+\@(?:[a-z0-9-]+\.)+[a-z0-9]{2,4}+$/i',
 							'employmentid' => '/^[0-9]{1,5}$/',
 							'mobile' => '/^\+?[0-9]{10,20}$/'
 							);
@@ -156,7 +161,6 @@ class UsersController extends VanillaController {
 	
 	function register() {
 		if (isset($_POST['regform'])) {
-			
 			$options = [
     						'cost' => 12,
     						'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
@@ -172,9 +176,13 @@ class UsersController extends VanillaController {
 			$password_confirm 	= $_POST['passwordC'];
 			if ($password_confirm !== $password) $this->setError('Password', $this->_ph->Pr('passwordnomatch'));
 			
-			$bdate 				= explode(' / ', $_POST['birthdate']);
+			$bdate				= str_replace(' ', '', $_POST['birthdate']);
+			$bdate 				= explode('/', $bdate);
+			if(!empty($bdate[0])) {if($bdate[2] > (int)date('Y') - 20) $this->setError('Birthdate', $this->_ph->Pr('youngbirthdate'));}
 			$bdate				= implode('-',$bdate);
 			$bdate 				= date_create($bdate);
+			$warn = date_get_last_errors();
+			if($warn['warning_count'] > 0) $this->setError('Birthdate', $this->_ph->Pr('invaliddate'));
 			if(!$bdate) $this->setError('Birthdate', $this->_ph->Pr('invaliddate'));
 			if($bdate) $bdate				= date_format($bdate, 'Y-m-d');
 			
@@ -214,8 +222,6 @@ class UsersController extends VanillaController {
 				'country'		=> $origin,
 				'address'		=> $address);
 				$this->_model->insert($data);
-				//$this->_model->where(array('id' => 2));
-				
 				echo $this->_model->execute();
 			}
  		}
@@ -226,7 +232,7 @@ class UsersController extends VanillaController {
 		$this->set('departments', $depts);
 		
 		$this->_model->from('positions');
-		$this->_model->select('id, name, title');
+		$this->_model->select('id, name');
 		$this->_model->where('level > 4');
 		$positions=$this->_model->execute();
 		//print_r($positions);

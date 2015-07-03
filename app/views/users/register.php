@@ -59,7 +59,7 @@
 	<div class="form-group required">
 		<label for="inputBDate" class="col-sm-5 control-label"><?php $ph->P('bday');?></label>
 		<div class="col-sm-7">
-			<input type="tel" style="width:130px;" class="form-control" name="birthdate" id="inputBDate" <?php $this->fill('birthdate');?> pattern="[0-9]*" maxlength="14" autocomplete="off" placeholder="DD / MM / YYYY">
+			<input type="date" style="width:130px;" class="form-control" name="birthdate" id="inputBDate" <?php $this->fill('birthdate');?> pattern="[0-9]*" maxlength="14" autocomplete="off" placeholder="DD / MM / YYYY">
 		</div>
 	</div>		
 
@@ -77,30 +77,10 @@
 		</div>
 	</div>	
 	
-	<!--<input type="hidden" name="mobile" id="mobileHidden" value="">-->
 	<div class="form-group required">
 		<label for="inputMobile" class="col-sm-5 control-label"><?php $ph->P('mobile');?></label>
 		<div class="col-sm-7">
 			<input type="tel" class="form-control" name="mobile" maxlength="20" id="inputMobile" autocomplete="off" <?php $this->fill('mobile');?> placeholder="<?php $ph->P('mobile');?>">
-
-<!--			<div class="input-group">
-opcode			<?php //if($rtl): ?>
-				<input type="tel" class="form-control" name="mobileN" maxlength="8" id="inputMobileN" autocomplete="off" placeholder="<?php //$ph->P('mobile');?>" dir="ltr">
-				<?php //endif; ?>
-				<div class="input-group-btn">
-					<button type= "button" id="inputMobOp" name="mobOp" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span> Code</button>
-					<ul class="dropdown-menu">
-						<li><a onclick="document.getElementById('inputMobOp').innerHTML ='075'">075</a></li>
-						<li><a onclick="document.getElementById('inputMobOp').innerHTML ='077'">077</a></li>
-						<li><a onclick="document.getElementById('inputMobOp').innerHTML ='078'">078</a></li>
-						<li><a onclick="document.getElementById('inputMobOp').innerHTML ='079'">079</a></li>
-					</ul>
-				</div>
-				<?php //if(!$rtl): ?>
-				<input type="tel" class="form-control" name="mobileN" maxlength="8" id="inputMobileN" autocomplete="off" placeholder="<?php //$ph->P('mobile');?>">
-				<?php //endif; ?>
-			</div>
--->
 		</div>
 	</div>
 
@@ -122,7 +102,7 @@ opcode			<?php //if($rtl): ?>
 				<select id="inputPosition" class="selectpicker form-control" name="position">
 				<option value="">Please Select</option>
 				<?php foreach($positions as $pos): ?>
-				<option value="<?php echo $pos['id'];?>" <?php $this->fill('position', 1, $pos['id']);?>><?php echo $pos['name'] . ' - ' . $pos['title'];?></option>
+				<option value="<?php echo $pos['id'];?>" <?php $this->fill('position', 1, $pos['id']);?>><?php echo $pos['name'];?></option>
 				<?php endforeach; ?>
 				</select>
 		</div>

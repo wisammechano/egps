@@ -3,7 +3,7 @@
 class ItemsController extends VanillaController {
 
 	function beforeAction () {
-		//$this->Authorization->setTable('users');
+		checkUser();
 	}
 		
 	
@@ -15,8 +15,6 @@ class ItemsController extends VanillaController {
 	}
 	
 	function viewall() {
-		$this->set('title','All Items - My Todo List App');
-		$this->set('todo',$this->_model->selectAll());
 	}
 	
 	function add() {

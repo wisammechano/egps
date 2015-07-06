@@ -9,7 +9,7 @@
 		</ul>
 	</div>
 <?php $c="has-error"; endif; ?>
-	<form id="loginForm" class="validate" name="loginform" method="post" action="login">
+	<form id="loginForm" class="validate" name="loginform" method="post" action="login<?php if(isset($_GET['r'])) echo '?r='. S($_GET['r']);?>">
 		<input type="hidden" name="loginform" value="loginform">
 		<div class="form-group <?php echo $c; ?> form-group-lg required">
 			<label for="usernameInput" class="control-label"><?php $ph->P('username');?> </label>

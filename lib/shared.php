@@ -1,8 +1,60 @@
 <?php
 
-function stripSlashesDeep($value) {
-	$value = is_array($value) ? array_map('stripSlashesDeep', $value) : stripslashes($value);
-	return $value;
+/** Authorization Check **/
+
+function checkUser() {
+	sec_session_start();
+	$valid = false;
+	$redirect = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+	$redirect = explode('/', $redirect);
+	array_shift($redirect);
+	array_shift($redirect);
+	$redirect = '/'. implode('/', $redirect);
+	
+	if (isset($_SESSION['userID'], $_SESSION['loginString'])) {
+		$userID = $_SESSION['userID'];
+		$loginString = $_SESSION['loginString'];
+		$userBrowser = $_SERVER['HTTP_USER_AGENT'];
+		$usr = new User;
+		$usr->select('password');
+		$usr->where(array('id' => $userID));
+		$res = $usr->execute(1);
+		if ($res !== '') {
+			$loginCheck = hash('sha512', $res . $userBrowser);
+			if ($loginCheck === $loginString) $valid = true;
+		}
+	}
+	if ($valid) return true;
+	else redirect('/users/login?r=' . $redirect);
+}
+
+function S($val) {
+	return htmlentities($val);
+}
+/** Secure Session Init. **/
+
+function sec_session_start() {
+    $session_name = 'sec_session_id';   // Set a custom session name 
+    $secure = false;
+
+    // This stops JavaScript being able to access the session id.
+    $httponly = true;
+
+    // Forces sessions to only use cookies.
+    if (ini_set('session.use_only_cookies', 1) === FALSE) {
+        //header("Location: ../error.php?err=Could not initiate a safe session (ini_set)");
+        exit();
+    }
+
+    // Gets current cookies params.
+    $cookieParams = session_get_cookie_params();
+    session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
+
+    // Sets the session name to the one set above.
+    session_name($session_name);
+
+    session_start();            // Start the PHP session 
+    session_regenerate_id(true);    // regenerated the session, delete the old one. 
 }
 
 function unregisterGlobals() {
@@ -18,18 +70,6 @@ function unregisterGlobals() {
     }
 }
 
-/** Authorization Check **/
-
-function checkUser() {
-	session_start();
-	//echo session_id();
-	if (isset($_SESSION['userID']))
-	return true;
-	else {
-	//if($url != 'users/login')
-	redirect('/users/login');
-	}	
-}
 
 /** Secondary Call Function **/
 
@@ -57,7 +97,7 @@ function routeURL($url) {
 
 function redirect($url, $internal = true, $permanent = false)
 {
-	if(internal) $url = BASE_PATH . $url;
+	if($internal) $url = BASE_PATH . $url;
     	if (headers_sent() === false)
     	{
     		header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
@@ -150,11 +190,10 @@ if(strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')!==false || strstr($_SERV
 else
 {
         // can send GZIP compressed data
-        isBuggyIe() || ob_start("ob_gzhandler");
+        //isBuggyIe() || ob_start("ob_gzhandler");
 } 
 
 $cache = new Cache();
 $inflect = new Inflect();
-
 unregisterGlobals();
 callHook();

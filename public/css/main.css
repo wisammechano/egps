@@ -25,7 +25,7 @@ cursor: pointer;
     padding: 20px 20px;
     /*text-align: center;*/
     position: relative;
-    max-width:850px;
+    max-width:1020px;
     z-index: 1060;
 	/* border:1px solid; */
 }
@@ -69,6 +69,34 @@ cursor: pointer;
 	border-radius: 4px;
 	margin-bottom: 30px;
 }
+
+.design-box td,th,tr {
+	text-align: center;
+	border:0px dotted;
+	padding:10px 2px 10px 2px;
+}
+span.del:hover {
+	cursor:pointer;
+	color:red;
+}
+span.del:hover b {
+	display:none;
+}
+span.del:hover:before {
+	font-style:strong;
+	font-size:22px;
+	border:1px solid;
+	content:" × "
+}
+.center-text{
+	text-align:center;
+}
+.tableLS {
+	width:100%;
+	margin:5px auto;
+	border: 0px solid;
+}
+
 .has-success input {
 	background-color: #DFF0D8;
 }

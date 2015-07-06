@@ -1,0 +1,117 @@
+Array
+(
+    [LSDform] => submit
+    [system] => Array
+        (
+            [0] => ACC Drain Pot
+            ['block'] => Array
+                (
+                    [0] => 1
+                    [1] => 2
+                )
+
+            ['zone'] => Array
+                (
+                    [0] => 3
+                )
+
+            ['items'] => Array
+                (
+                    [0] => Pump 1 Suction IV Position
+                    [1] => Pump 1 Suction Pressure
+                    [2] => Pump 1 Discharge IV Position
+                    [3] => Pump 1 Discharge Pressure
+                    [4] => Pump 1 Sealing Line Pressure
+                    [5] => Pump 1 Bearing Oil Level
+                    [6] => Pump 2 Suction IV Position
+                    [7] => Pump 2 Suction Pressure
+                    [8] => Pump 2 Discharge IV Position
+                    [9] => Pump 2 Discharge Pressure
+                    [10] => Pump 2 Sealing Line Pressure
+                    [11] => Pump 2 Bearing Oil Level
+                )
+
+            ['tags'] => Array
+                (
+                    [0] => 10MAL10AA101
+                    [1] => 10MAL10CP501
+                    [2] => 10MAL10AA201
+                    [3] => 10MAL10CP502
+                    [4] => 10LCW14CP301
+                    [5] => null
+                    [6] => 10MAL20AA101
+                    [7] => 10MAL20CP501
+                    [8] => 10MAL20AA201
+                    [9] => 10MAL20CP502
+                    [10] => 10LCW14CP301
+                    [11] => null
+                )
+
+            ['types'] => Array
+                (
+                    [0] => opcl
+                    [1] => p
+                    [2] => opcl
+                    [3] => p
+                    [4] => p
+                    [5] => l
+                    [6] => opcl
+                    [7] => p
+                    [8] => opcl
+                    [9] => p
+                    [10] => p
+                    [11] => l
+                )
+
+            ['units'] => Array
+                (
+                    [0] => Unitless
+                    [1] => barg
+                    [2] => Unitless
+                    [3] => barg
+                    [4] => barg
+                    [5] => %
+                    [6] => Unitless
+                    [7] => barg
+                    [8] => Unitless
+                    [9] => barg
+                    [10] => barg
+                    [11] => %
+                )
+
+            ['setpoints'] => Array
+                (
+                    [0] => OP
+                    [1] => -0.5
+                    [2] => OP
+                    [3] => 12
+                    [4] => 5.5
+                    [5] => 100
+                    [6] => OP
+                    [7] => -0.5
+                    [8] => OP
+                    [9] => 12
+                    [10] => 5.5
+                    [11] => 100
+                )
+
+            ['alarms'] => Array
+                (
+                    [0] => 0
+                    [1] => 0
+                    [2] => 0
+                    [3] => 0
+                    [4] => 0
+                    [5] => 10
+                    [6] => 0
+                    [7] => 0
+                    [8] => 0
+                    [9] => 0
+                    [10] => 0
+                    [11] => 10
+                )
+
+        )
+
+    [submit] => Submit
+)

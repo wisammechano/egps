@@ -2,8 +2,51 @@ $(document).ready( function() {
 	$('form.validate').validateInput(); //Validate the form
 	$('input[type="tel"]').forceNumeric(); //Force user to input numbers
 	$('input[type="date"]').formatDate("dd/mm/yyyy"); // format the birthdate field
+	$('#addRow').click(function (e){
+		e.preventDefault();
+		addrow();
+	});
+	
+ 	$('body').on('click', '.del', function (e){
+		i=$(this).find('b').html() - 1;
+		//alert(i);
+		delRow(i);
+	}); 
+ 	
+	$('body').on('change', 'tr select.type', function(){
+		var item=this.value;
+		var units = $(this).parents('tr').find('select.unit');
+		units.html('');
+		url='?units=' + item;
+		units.load(url);
+	});
 });
 
+function addrow() {
+	var body = $('tbody');
+	var row = body.find('tr:eq(0)');
+	var i = body.find('tr').length + 1;
+	var html = '<tr>' + row.html() + '</tr>';
+	body.append(html);
+	var tr = body.find('tr:last');
+	tr.find('td.n').find('span.del b').html(i);
+	tr.find('td').find('select.unit').html('');
+	$('input[type="tel"]').forceNumeric();
+}
+
+ function delRow(i) {
+	var body = $('tbody');
+	var rows = body.find('tr');
+	if(rows.length > 1){
+		if (confirm("Delete?")){
+			rows.eq(i).remove();
+			for(j=i; j < rows.length ; j++) {
+				rows.eq(j).find('td.n').find('span.del b').html(j);
+			}
+		}
+	}		
+} 
+	
 // Validate Forms
 (function ( $ ) {
 	jQuery.fn.validateInput = function () {

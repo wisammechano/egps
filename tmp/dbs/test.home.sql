@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2015 at 01:09 AM
+-- Generation Time: Jul 06, 2015 at 09:01 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -165,6 +165,36 @@ INSERT INTO `users` (`id`, `username`, `password`, `employmentid`, `email`, `dep
 (4, 'ari.jamal', '$2y$12$cw4gLWPK2ownRsytjzPHLOuQBXQd7O.S6mgIWVgoN6kEqJQGBnu1a', 1493, 'ari.jamal@yahoo.com', 3, 12, 1, 'Ari', 'Jamal', '1991-04-04', '+9647504917621', 'IQ', 'Erbil, Mardeen', 'en-us', '2015-07-03 00:04:21'),
 (5, 'arash.azizi', '$2y$12$cw4gLWPK2ownRsytjzPHLOuQBXQd7O.S6mgIWVgoN6kEqJQGBnu1a', 1443, 'arash.azizi@gmail.com', 1, 9, 1, 'Arash', 'Azizi', '1982-06-21', '+9647719249202', 'IR', 'West Azerbayejan, Sardasht, Piruzi St., Sepah Bank Alley, No. 789', 'en-us', '2015-07-03 00:20:17'),
 (6, 'eng.ali', '$2y$12$tU3tjPQvlqEhMiPMlduC7eiK911cZzU5QCzbClcsziBx7U6IiGh4C', 1337, 'eng.alila@gmail.com', 1, 9, 1, 'Ali', 'Ismael', '1989-05-25', '+9647502134333', 'IQ', 'Erbil, Farmanbaran', 'en-us', '2015-07-03 00:29:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zones`
+--
+
+CREATE TABLE IF NOT EXISTS `zones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `subsystems` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `zones`
+--
+
+INSERT INTO `zones` (`id`, `name`, `subsystems`) VALUES
+(1, 'Combined 1', 0),
+(2, 'Combined 2', 0),
+(3, 'Combined 3', 0),
+(4, 'GT 1-4', 0),
+(5, 'GT 5-8', 0),
+(6, 'Switch Gear', 0),
+(7, 'UEB 1-4', 0),
+(8, 'UEB 5-8', 0),
+(9, 'Switch Yard 1', 0),
+(10, 'Switch Yard 2', 0),
+(11, 'WTP', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

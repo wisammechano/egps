@@ -90,7 +90,7 @@ class UsersController extends VanillaController {
 		$value=strtolower($value);
 		// Scheme Validation //
 		$patterns = array(	'username' => '/^(?:[a-z][a-z0-9]*(?:([._])(?!\1)[a-z0-9]+)*){5,20}$/i',
-							'email' => '/^[a-z]+[0-9_.-]*[a-z0-9]+\@(?:[a-z0-9-]+\.)+[a-z0-9]{2,4}+$/i',
+							'email' => '/^[a-z]+[a-z0-9_.-]*[a-z0-9]+\@(?:[a-z0-9-]+\.)+[a-z0-9]{2,4}+$/i',
 							'employmentid' => '/^[0-9]{1,5}$/',
 							'mobile' => '/^\+?[0-9]{10,20}$/'
 							);

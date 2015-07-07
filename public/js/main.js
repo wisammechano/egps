@@ -2,28 +2,58 @@ $(document).ready( function() {
 	$('form.validate').validateInput(); //Validate the form
 	$('input[type="tel"]').forceNumeric(); //Force user to input numbers
 	$('input[type="date"]').formatDate("dd/mm/yyyy"); // format the birthdate field
-	$('#addRow').click(function (e){
+	$('body').on('click', '#addRow', function (e){
 		e.preventDefault();
-		addrow();
+		var i;
+		i= $(this).parents('tbody.tsep').attr('id');
+		addRow(i.substr(1));
 	});
+	
+	$('body').on('click','#addSub', function(e) {
+		e.preventDefault();
+		var i;
+		i= $(this).parents('tbody.tsep').attr('id');
+		var clone = true;//confirm("Clone ?");
+		addSub(clone, i.substr(1));
+	})
 	
  	$('body').on('click', '.del', function (e){
 		i=$(this).find('b').html() - 1;
+		j=$(this).parents('tbody.tbody').attr('id');
 		//alert(i);
-		delRow(i);
+		delRow(i,j.substr(1));
 	}); 
  	
+	$('body').on('click', '.delS', function (e){
+		i=$(this).parents('tbody.thead').attr('id');
+		//alert(i);
+		delSub(i.substr(1));
+	}); 
+	
 	$('body').on('change', 'tr select.type', function(){
 		var item=this.value;
 		var units = $(this).parents('tr').find('select.unit');
-		units.html('');
-		url='?units=' + item;
-		units.load(url);
+		var unit = $(this).parents('tr').find('input.unit');
+		if(item == 'custom'){
+			units.css('display', 'none');
+			units.prop('name', '');
+			unit.prop('name', "system['units'][]")
+		}
+		else {
+			if(units.css('display') === 'none'){
+				units.css('display', '');
+				units.prop('name', "system['units'][]");
+				unit.prop('name', "")
+			}
+			units.html('');
+			url='?units=' + item;
+			units.load(url);
+		};
 	});
 });
 
-function addrow() {
-	var body = $('tbody');
+function addRow(i) {
+	var body = $('tbody.tbody').filter('#d'+i);
 	var row = body.find('tr:eq(0)');
 	var i = body.find('tr').length + 1;
 	var html = '<tr>' + row.html() + '</tr>';
@@ -34,8 +64,8 @@ function addrow() {
 	$('input[type="tel"]').forceNumeric();
 }
 
- function delRow(i) {
-	var body = $('tbody');
+ function delRow(i, j) {
+	var body = $('tbody.tbody').filter('#d'+j);
 	var rows = body.find('tr');
 	if(rows.length > 1){
 		if (confirm("Delete?")){
@@ -46,7 +76,49 @@ function addrow() {
 		}
 	}		
 } 
-	
+
+function addSub(clone, i) {
+	alert(i);
+	var table = $('table');
+	var head = table.find('tbody.thead').filter('#d'+i);
+	var body = table.find('tbody.tbody').filter('#d'+i);
+	var sep = table.find('tbody.tsep').filter('#d'+i);
+	var i = table.find('tbody.tsep').length + 1; /////////////fix
+	var rowsB = body.find('tr');
+	var html;
+	html = '<tbody class="thead" id="d'+i+'">';
+	html += head.html();
+	html += '</tbody>';
+	html += '<tbody class="tbody" id="d'+i+'">';
+	//console.log(html);
+	if(!clone){
+		html += '<tr>';
+		html += body.find('tr:eq(0)').html();
+		html += '</tr>';
+	};
+	html += '</tbody>';
+	html += '<tbody class="tsep" id="d'+i+'">';
+	html += sep.html();
+	html += '</tbody>';
+	sep.after(html);
+	if(clone){
+		body.find('tr').each(function (){
+			$(this).clone().appendTo('tbody.tbody#d'+i).val($($this).val());
+		})
+	}
+	if(!clone) {
+		
+	}
+}
+
+function delSub(i) {
+	var del = $('tbody.thead, tbody.tbody, tbody.tsep');
+	if (del.length > 3){	
+	del.filter('#d'+i).each(function (){
+		$(this).remove();
+	});
+	}
+}
 // Validate Forms
 (function ( $ ) {
 	jQuery.fn.validateInput = function () {

@@ -13,7 +13,7 @@ $(document).ready( function() {
 		e.preventDefault();
 		var i;
 		i= $(this).parents('tbody.tsep').attr('id');
-		var clone = true;//confirm("Clone ?");
+		var clone = confirm("Clone ?");
 		addSub(clone, i.substr(1));
 	})
 	
@@ -78,12 +78,11 @@ function addRow(i) {
 } 
 
 function addSub(clone, i) {
-	alert(i);
 	var table = $('table');
 	var head = table.find('tbody.thead').filter('#d'+i);
 	var body = table.find('tbody.tbody').filter('#d'+i);
 	var sep = table.find('tbody.tsep').filter('#d'+i);
-	var i = table.find('tbody.tsep').length + 1; /////////////fix
+	var i = random();
 	var rowsB = body.find('tr');
 	var html;
 	html = '<tbody class="thead" id="d'+i+'">';
@@ -91,7 +90,10 @@ function addSub(clone, i) {
 	html += '</tbody>';
 	html += '<tbody class="tbody" id="d'+i+'">';
 	//console.log(html);
-	if(!clone){
+	if(clone){
+		//html+=body.html();
+	}
+	else {
 		html += '<tr>';
 		html += body.find('tr:eq(0)').html();
 		html += '</tr>';
@@ -103,17 +105,23 @@ function addSub(clone, i) {
 	sep.after(html);
 	if(clone){
 		body.find('tr').each(function (){
-			$(this).clone().appendTo('tbody.tbody#d'+i).val($($this).val());
+			var row = $(this).clone();
+			row.appendTo('tbody.tbody#d'+i);
+			//row.filter('input').val($this.filter('input').val());
 		})
 	}
-	if(!clone) {
+	else {
+		$('tbody.tbody#d'+i).find('tr').each(function (){
+			$(this).find('td').find('select.unit').html('');
+		})
 		
 	}
+	$('input[type="tel"]').forceNumeric();
 }
 
 function delSub(i) {
 	var del = $('tbody.thead, tbody.tbody, tbody.tsep');
-	if (del.length > 3){	
+	if (del.length > 3 && confirm('Sure?')){	
 	del.filter('#d'+i).each(function (){
 		$(this).remove();
 	});
@@ -199,6 +207,11 @@ function delSub(i) {
 		}); //Each Iterator
 	};
 } ( jQuery ));
+
+function random(min=100,max=999)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
 
 // Force Numeric
 (function ( $ ) {

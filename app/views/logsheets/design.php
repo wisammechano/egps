@@ -15,7 +15,7 @@
 						<input type="text" id="sysName1" class="form-control center-text" name="system['name']" placeholder="<?php $ph->P("systemname");?>">
 						</div>
 					</th>
-					<th colspan="1">
+					<th colspan="1"><?php //todooooooo fix subsystems;?>
 						<input type="checkbox" id="block1Input" value="1" name="system['block'][]" checked> <label for="block1Input"> Block 1 </label>
 					</th>
 					<th colspan="1">

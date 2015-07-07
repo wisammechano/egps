@@ -103,25 +103,21 @@ span.del:hover:before {
 	border: 0px solid;
 }
 
- .select-editable {
+.select-editable {
     position:relative;
 /*    background-color:white;
     border:solid grey 1px;
     width:120px;
     height:18px; */
- }
- .select-editable select {
-    position:absolute;
-    top:-17px;
- }
- .select-editable input {
-    position:absolute;
-    top:-17px;
-
- }
- .select-editable select:focus, .select-editable input:focus {
-     outline:none;
- }
+}
+.select-editable select {
+	position:absolute;
+	top:-17px;
+}
+.select-editable input {
+	position:absolute;
+	top:-17px;
+}
 
 .has-success input {
 	background-color: #DFF0D8;

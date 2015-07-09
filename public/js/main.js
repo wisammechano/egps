@@ -30,6 +30,15 @@ $(document).ready( function() {
 		delSub(i.substr(1));
 	}); 
 	
+	$('body').on('click', '#parse', function (e) {/////////////////////////PARSE
+		e.preventDefault();
+		var parsed = '';
+		$('tbody').find('input, select').each(function(){
+			
+			parsed += this.value + '|';
+		});
+		$('#parsed').html(parsed);
+	})
 	$('body').on('change', 'tr select.type', function(){
 		var item=this.value;
 		var units = $(this).parents('tr').find('select.unit');
@@ -82,7 +91,7 @@ function addSub(clone, i) {
 	var head = table.find('tbody.thead').filter('#d'+i);
 	var body = table.find('tbody.tbody').filter('#d'+i);
 	var sep = table.find('tbody.tsep').filter('#d'+i);
-	var i = random();
+	var i = random(100,999);
 	var rowsB = body.find('tr');
 	var html;
 	html = '<tbody class="thead" id="d'+i+'">';
@@ -127,6 +136,12 @@ function delSub(i) {
 	});
 	}
 }
+
+function random(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
 // Validate Forms
 (function ( $ ) {
 	jQuery.fn.validateInput = function () {
@@ -208,10 +223,6 @@ function delSub(i) {
 	};
 } ( jQuery ));
 
-function random(min=100,max=999)
-{
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
 
 // Force Numeric
 (function ( $ ) {
@@ -430,148 +441,3 @@ function random(min=100,max=999)
         }
     };
 })(jQuery);
-
-
-
-/*
-
-	$(function() {
-		var d = new Date(1990 , 10, 28);
-		$( "#inpvutBDate" ).datepicker({
-							showAnim: "slideDown",
-							dateFormat: "dd M, yy", 
-     						changeMonth: true,
-     						changeYear: true,
-     						yearRange: "c-50:c-10",
-     						defaultDate: d
-     						});
-	});	
-(function ( $ ) {
-	$.fn.validate = function ( options ) {
-		var settings = $.extend({
-			//Defaults
-			validateURL: "./validate",
-			showErrors: true,
-			rules
-		}, options );
-		
-		return this.css({
-			color: settings.color,
-			backgroundColor: settings.bg
-		});
-	}
-	
-} ( jQuery ));
-
-(function ( $ ) {
- 
-    $.fn.greenify = function( options ) {
- 
-        // This is the easiest way to have default options.
-        var settings = $.extend({
-            // These are the defaults.
-            color: "#556b2f",
-            backgroundColor: "white"
-        }, options );
- 
-        // Greenify the collection based on the settings variable.
-        return this.css({
-            color: settings.color,
-            backgroundColor: settings.backgroundColor
-        });
- 
-    };
- 
-}( jQuery ));
-
-(function( $ ) {
- 
-    $.fn.showLinkLocation = function() {
- 
-        this.filter( "a" ).each(function() {
-            var link = $( this );
-            link.append( " (" + link.attr( "href" ) + ")" );
-        });
- 
-        return this;
- 
-    };
- 
-}( jQuery ));
- 
-// Usage example:
-$( "a" ).showLinkLocation();
-
-*/
-/* $.validator.setDefaults({
-	submitHandler: function() {
-		alert("submitted!");
-	}
-});
-
-$().ready(function() {
-	// validate the comment form when it is submitted
-	$("#loginForm").validate();
-
-	// validate signup form on keyup and submit
-	$("#regForm").validate({
-		rules: {
-			inputUsername: {
-				required: true,
-				minlength: 2
-			},
-			inputPassword: {
-				required: true,
-				minlength: 5
-			},
-			inputPasswordC: {
-				required: true,
-				minlength: 5,
-				equalTo: "#inputPassword"
-			},
-			inputEmail: {
-				required: true,
-				email: true
-			},
-		},
-		messages: {
-			inputUsername: {
-				required: "Please enter a username",
-				minlength: "Your username must consist of at least 2 characters"
-			},
-			inputPassword: {
-				required: "Please provide a password",
-				minlength: "Your password must be at least 5 characters long"
-			},
-			inputPasswordC: {
-				required: "Please provide a password",
-				minlength: "Your password must be at least 5 characters long",
-				equalTo: "Please enter the same password as above"
-			},
-			inputEmail: "Please enter a valid email address",
-		}
-	});
-
-	// propose username by combining first- and lastname
-	$("#username").focus(function() {
-		var firstname = $("#firstname").val();
-		var lastname = $("#lastname").val();
-		if (firstname && lastname && !this.value) {
-			this.value = firstname + "." + lastname;
-		}
-	});
-
-	//code to hide topic selection, disable for demo
-	var newsletter = $("#newsletter");
-	// newsletter topics are optional, hide at first
-	var inital = newsletter.is(":checked");
-	var topics = $("#newsletter_topics")[inital ? "removeClass" : "addClass"]("gray");
-	var topicInputs = topics.find("input").attr("disabled", !inital);
-	// show when newsletter is checked
-	newsletter.click(function() {
-		topics[this.checked ? "removeClass" : "addClass"]("gray");
-		topicInputs.attr("disabled", !this.checked);
-	});
-});
-
- */

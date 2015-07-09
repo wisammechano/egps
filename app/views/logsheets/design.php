@@ -88,11 +88,11 @@
 			</tbody>
 			<tfoot>
 				<tr>
-				<td colspan="5"></td>
+				<td colspan="5"><button id="parse">Parse</button></td>
 				<td colspan="2"><input type="submit" name="submit" value="<?php $ph->P("submit");?>"></td>
 				</tr>
 			</tfoot>
 		</table>
-		
+		<div id="parsed"></div>
 	</form>
 </div>

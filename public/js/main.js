@@ -35,7 +35,7 @@ $(document).ready( function() {
 		var parsed = '';
 		$('tbody').find('input, select').each(function(){
 			
-			parsed += this.value + '|';
+			parsed += this.value + '-|-';
 		});
 		$('#parsed').html(parsed);
 	})

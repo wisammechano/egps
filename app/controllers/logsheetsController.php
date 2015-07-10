@@ -10,42 +10,41 @@ class LogsheetsController extends VanillaController {
 	}
 	
 	function design () {
+		$units = new Units;
+		$types = $units->getTypes();
+		
 		if (isset($_POST['LSDform'])) {
-			print_r($_POST);
+			$system = $_POST['systemName'];
+			$blocks = $_POST['block'];
+			$zoneID= $_POST['zone'];
+			$formData = $_POST['LSDform'];
+			$subsys = explode('#', $formData);
+			$logSheet = array(	'SystemName' => $system,
+								'Blocks' => $blocks,
+								'Zone' => $zoneID,
+								'SubSystems' => array());
+			foreach ($subsys as $data){
+				$tempSub = array();
+				$pattern = '/^\[([^\[\]]+)\]/'; // '/^\[(.+)\]/'
+				preg_match($pattern, $data, $matches);
+				$subName=$matches[1];
+				//$tempSub['name'] = $matches[1];
+				$data = substr($data, 2 + strlen($subName));
+				$rows = explode('--', $data);
+				$i=0;
+				foreach($rows as $row){
+					$inputs = explode(',', $row);
+					foreach ($inputs as $input) {
+						$items = explode(':', $input);
+						$tempSub[$subName][$items[0]][$i] = $items[1];
+					}
+					$i++;
+				}
+				$logSheet['SubSystems']+= $tempSub;
+			}
+			echo json_encode($logSheet);
 			$this->render=0;
 		}
-		$types = array(	'p' => 'Pressure',
-						't' => 'Temperature',
-						'l' => 'Level',
-						'dp' => 'Differential Pressure',
-						'flow' => 'Flow',
-						'power'=> 'Power',
-						'e' => 'Energy',
-						'vib' => 'Vibration',
-						'v' => 'Voltage',
-						'c' => 'Current',
-						'freq' => 'Frequency',
-						'time' => 'Time',
-						'pf' => 'Power Factor',
-						'opcl' => 'Open, Close',
-						'onoff' => 'On, Off',
-						'yesno' => 'Yes, No',
-						'number' => 'Number',
-						'custom' => 'Custom'
-						);
-		$units= array(	'p' => array('barg', 'bara', 'mbar', 'psi', 'MPa', 'kPa', 'Pa', 'mmHg', 'mmH2O', 'atm'),
-						't' => array('c'=>'&deg;C', 'f'=>'&deg;F', 'k'=>'Kelvin'),
-						'l' => array('%', 'm', 'cm', 'mm', 'in', 'ft', 'mmH2O'),
-						'dp' => array('bar', 'mbar', 'psid', 'kpa', 'pa'),
-						'flow' => array('ls'=>'L/s', 'ms'=>'m&sup3;/s', 'fs'=>'ft&sup3;/s', 'gpm'=>'USgpm'),
-						'power' => array('kW', 'MW', 'MVar', 'kVA', 'hp'),
-						'e' => array('J', 'kJ', 'kWh', 'BTU'),
-						'vib' => array('mmms' => '&micro;mm/s', 'mms' => 'mm/s'),
-						'v' => array('V', 'kV'),
-						'c' => array('a'=>'Amps'),
-						'freq' => array('hz' => 'Herts'),
-						'time' => array('ms'=>'milliseconds', 's'=>'seconds', 'm'=>'minutes', 'h'=>'hours', 'd'=>'days', 'w'=>'weeks', 'M'=>'months', 'y'=>'years')
-						);
 		$this->set('types', $types);
 		
 		$this->_model->from("zones");
@@ -57,16 +56,13 @@ class LogsheetsController extends VanillaController {
 			$this->render=0;
 			
 			$type=$_GET['units'];
-			if(array_key_exists($type, $units)){
-				$unit=$units[$type];
+			$unit=$units->getUnits($type);
+			if ($unit !== false){
 				foreach($unit as $key => $val){
 					$v = is_numeric($key)? $val:$key;
 					echo '<option value="'.$v.'">' . $val. '</option>'.PHP_EOL;					
 				}
-			}
-//			else if($type === 'custom') {
-				//echo '<input type="text" class="form-control">'.PHP_EOL;
-//			} 
+			}				
 			else echo '<option>Unitless</option>'.PHP_EOL;	
 			exit;
 		}

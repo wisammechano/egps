@@ -2,6 +2,9 @@ $(document).ready( function() {
 	$('form.validate').validateInput(); //Validate the form
 	$('input[type="tel"]').forceNumeric(); //Force user to input numbers
 	$('input[type="date"]').formatDate("dd/mm/yyyy"); // format the birthdate field
+	$('body').on('submit', '#designLS', function (e){
+		parseData();
+	});
 	$('body').on('click', '#addRow', function (e){
 		e.preventDefault();
 		var i;
@@ -30,29 +33,27 @@ $(document).ready( function() {
 		delSub(i.substr(1));
 	}); 
 	
-	$('body').on('click', '#parse', function (e) {/////////////////////////PARSE
+/* 	$('body').on('click', '#parse', function (e) {/////////////////////////PARSE
 		e.preventDefault();
-		var parsed = '';
-		$('tbody').find('input, select').each(function(){
-			
-			parsed += this.value + '-|-';
-		});
-		$('#parsed').html(parsed);
-	})
+		parseData();
+	}) */
+	
 	$('body').on('change', 'tr select.type', function(){
 		var item=this.value;
 		var units = $(this).parents('tr').find('select.unit');
 		var unit = $(this).parents('tr').find('input.unit');
 		if(item == 'custom'){
-			units.css('display', 'none');
-			units.prop('name', '');
-			unit.prop('name', "system['units'][]")
+			units.addClass('hide');
+			//units.prop('name', '');
+			unit.removeClass('hide');
+			//unit.prop('name', "system['subsys']['units'][]")
 		}
 		else {
 			if(units.css('display') === 'none'){
-				units.css('display', '');
-				units.prop('name', "system['units'][]");
-				unit.prop('name', "")
+				units.removeClass('hide');
+				//units.prop('name', "system['subsys']['units'][]");
+				//unit.prop('name', "");
+				unit.addClass('hide');
 			}
 			units.html('');
 			url='?units=' + item;
@@ -140,6 +141,29 @@ function delSub(i) {
 function random(min,max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+function parseData() {
+	var parsed = '';
+	var subsystems;
+	subsystems = $('tbody').find('#subSysName');
+	subsystems.each(function (){
+		parsed += '['+ this.value + ']';
+		id = $(this).parents('tbody').attr('id');
+		var rows = $('tbody.tbody').filter('#' + id).find('tr').has('input, select');
+		rows.each(function(){
+			var subVars = $(this).find('input, select').not('.hide');
+			subVars.each(function(){
+				parsed += this.id + ':' + this.value + ',';
+			});
+			parsed = parsed.slice(0, -1);
+			parsed += '--';
+		});
+		parsed = parsed.slice(0, -2);
+		parsed += '#';
+	});
+	parsed = parsed.slice(0, -1);
+	$('#parsed').val(parsed);
 }
 
 // Validate Forms

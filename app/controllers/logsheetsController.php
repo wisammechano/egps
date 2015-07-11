@@ -12,17 +12,22 @@ class LogsheetsController extends VanillaController {
 	function design () {
 		$units = new Units;
 		$types = $units->getTypes();
-		
 		if (isset($_POST['LSDform'])) {
+			$user = $_SESSION['userID'];
+			//print_r($_POST);
 			$system = $_POST['systemName'];
 			$blocks = $_POST['block'];
+			if(count($blocks) > 1) $blocks = $blocks[0]+$blocks[1];
 			$zoneID= $_POST['zone'];
 			$formData = $_POST['LSDform'];
 			$subsys = explode('#', $formData);
-			$logSheet = array(	'SystemName' => $system,
-								'Blocks' => $blocks,
-								'Zone' => $zoneID,
-								'SubSystems' => array());
+			$subsysNo = count($subsys);
+			$logSheet = array(	'systemName' => $system,
+								'blocks' => $blocks,
+								'zoneID' => $zoneID,
+								'subsystemsNo' => $subsysNo,
+								'data' => array(),
+								'addedBy' => $user);
 			foreach ($subsys as $data){
 				$tempSub = array();
 				$pattern = '/^\[([^\[\]]+)\]/'; // '/^\[(.+)\]/'
@@ -36,13 +41,17 @@ class LogsheetsController extends VanillaController {
 					$inputs = explode(',', $row);
 					foreach ($inputs as $input) {
 						$items = explode(':', $input);
-						$tempSub[$subName][$items[0]][$i] = $items[1];
+						$inpVal = $items[1] === '00'? 'null':$items[1];
+						$tempSub[$subName][$items[0]][$i] = $inpVal;
 					}
 					$i++;
 				}
-				$logSheet['SubSystems']+= $tempSub;
+				$logSheet['data']+= $tempSub;
 			}
-			echo json_encode($logSheet);
+			$logSheet['data'] = json_encode($logSheet['data']);
+			print_r($logSheet);
+			$this->_model->insert($logSheet);
+			echo $this->_model->execute();
 			$this->render=0;
 		}
 		$this->set('types', $types);

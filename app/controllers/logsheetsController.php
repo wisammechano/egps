@@ -9,6 +9,24 @@ class LogsheetsController extends VanillaController {
 		$this->_ph->setSection('error');
 	}
 	
+	function view($id = null){
+		if ($id === null){
+			redirect('/logsheets/viewall');
+		}
+		$this->_model->select("systemName, blocks, zones.name as zoneName, users.username as addedBy, subsystemsNo, data");
+		$this->_model->join('zones', array('id' => 'zoneID'));
+		$this->_model->join('users', array('id' => 'addedBy'));
+		$this->_model->where(array('id' => $id));
+		$res = $this->_model->execute();
+		
+		$this->set('sysName', $res['systemName']);
+		$this->set('blocks', $res['blocks']);
+		$this->set('zone', $res['zoneName']);
+		$this->set('addedBy', $res['addedBy']);
+		$this->set('subNo', $res['subsystemsNo']);
+		$this->set('data', $res['data']);
+		
+	}
 	function design () {
 		$units = new Units;
 		$types = $units->getTypes();

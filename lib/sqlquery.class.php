@@ -6,6 +6,7 @@ class SQLQuery {
     protected $_query;
     protected $_table;
     protected $_conditions;
+	protected $_joins;
     
 
     /** Connects to database **/
@@ -57,6 +58,16 @@ class SQLQuery {
     	$this->_query = 'SELECT '. $data.' from `'.$this->_table.'`';
 		//return $this->_model;
    	}
+	
+	function join($table, $conditions = array()) {
+		$sql = ' JOIN ';
+		$sql .= $table . ' ON ';
+		foreach($conditions as $left => $right){
+			$sql .= sprintf("%s = %s AND", $table .'.'. $this->S($left), $this->_table .'.'. $this->S($right));
+		}
+		$sql = substr($sql, 0,-4);
+		$this->_joins .= $sql;	
+	}
     	
     function insert($data = array()) {
     	$sql = 'INSERT INTO ' . $this->_table . ' SET ' ;
@@ -84,11 +95,12 @@ class SQLQuery {
 
 	function execute($singleResult = false) {
 		$bol = true;
-		$sql = $this->_query . $this->_conditions ;
+		
+		$sql = $this->_query . $this->_joins . $this->_conditions ;
 		if(preg_match('/SELECT|SHOW|DESCRIBE|EXPLAIN/i', $sql)) $bol = false;
 		//echo $sql;
 		$result = ($bol ? $this->query($sql, $singleResult):$this->query($sql, $singleResult, false));
-		$this->_query = $this->_conditions = '';
+		$this->_query = $this->_conditions = $this->_joins = '';
 		return $result;
 	}
 	

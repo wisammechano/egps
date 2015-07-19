@@ -94,6 +94,20 @@ span.del:hover:before {
 	border:1px solid;
 	content:" × "
 }
+.LS-head {
+	border:1px solid;
+	border-radius: 50px;
+	background-color: rgba(194, 225, 200, 0.60);
+	width:50%;
+	margin:auto;
+	
+}
+
+.LS-head h3 {
+	margin-top: 10px;
+	margin-bottom:10px;
+}
+
 .center-text{
 	text-align:center;
 }

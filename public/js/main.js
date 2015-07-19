@@ -1,4 +1,4 @@
-$(document).ready( function() {
+$(document).ready( function() { ////////////////////////////////sdf
 	$('form.validate').validateInput(); //Validate the form
 	$('input[type="tel"]').forceNumeric(); //Force user to input numbers
 	$('input[type="date"]').formatDate("dd/mm/yyyy"); // format the birthdate field

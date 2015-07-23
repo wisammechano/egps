@@ -43,6 +43,11 @@ class HTML {
 		return $data;
 	}
 	
+	function includeLess($fileName) {
+		$data = '<link rel="stylesheet" type="text/less" href="'.BASE_PATH.'/css/less/'.$fileName.'/'.$fileName.'.less" />' . PHP_EOL;
+		return $data;
+	}
+	
 	function E($element, $attributes = array(), $closeTag=true, $innerHTML='') {
 		$data = "<". $element;
 		if (!empty($attributes)) {

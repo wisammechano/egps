@@ -11,12 +11,13 @@ $ph->setSection(__FILE__);
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <?php echo $html->includeCss("bootstrap");?>
 <?php if($rtl)echo $html->includeCss("bootstrap-rtl");?>
-<?php echo $html->includeCss("jquery-ui");?>
-<?php echo $html->includeCss("main");?>
+<?php //echo $html->includeCss("jquery-ui");?>
+<?php echo $html->includeLess("main");?>
 <?php echo $html->includeJs("jquery");?>
 <?php echo $html->includeJs("jquery-ui");?>
 <?php echo $html->includeJs("bootstrap");?>
 <?php echo $html->includeJs("main");?>
+<?php echo $html->includeJS('less');?>
 <title><?php $ph->P('title');?></title>
 <link rel="shortcut icon" type="image/png" href="<?php echo BASE_PATH.'/favicon.png'?>">
 </head>

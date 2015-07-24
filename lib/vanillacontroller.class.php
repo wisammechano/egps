@@ -40,6 +40,7 @@ class VanillaController {
 	function __destruct() {
 		if ($this->render && is_object($this->_template)) {
 			$this->_template->render($this->doNotRenderHeader);
+			//ob_end_flush();
 		}
 	}
 		

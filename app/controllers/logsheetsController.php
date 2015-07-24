@@ -8,6 +8,7 @@ class LogsheetsController extends VanillaController {
 		$this->_ph->setLang('en-us');
 		$this->_ph->setSection('error');
 	}
+
 	
 	function view($id = null){
 		if ($id === null){
@@ -25,7 +26,6 @@ class LogsheetsController extends VanillaController {
 		$this->set('addedBy', $res['addedBy']);
 		$this->set('subNo', $res['subsystemsNo']);
 		$this->set('data', $res['data']);
-		
 	}
 	function design () {
 		$units = new Units;

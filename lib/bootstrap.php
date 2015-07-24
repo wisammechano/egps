@@ -15,4 +15,5 @@ if ( get_magic_quotes_gpc() ) {
 require_once(PATH_CONFIG.'/routing.php');
 require_once(PATH_CONFIG.'/inflection.php');
 //require_once(PATH_LIB.'/functions.php');
+require_once('Mobile-Detect/Mobile_Detect.php');
 require_once(PATH_LIB.'/shared.php');

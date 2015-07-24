@@ -5,6 +5,7 @@ class Template {
 	protected $_errors = array();
 	protected $_controller;
 	protected $_action;
+	protected $_d;
 	//protected $_HTML;
 	
 	function __construct($controller,$action) {
@@ -39,6 +40,9 @@ class Template {
 	/** Display Template **/
 	
     function render($doNotRenderHeader = 0) {
+    	global $detect;
+    	$mob = $detect->isMobile();
+		//$this->_d = $detect;
 		$errors = $this->_errors;
 		$html = new HTML;
 		$ph = new Phrases;

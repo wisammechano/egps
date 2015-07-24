@@ -183,6 +183,15 @@ function isBuggyIe() {
 
 /** Get Required Files **/
 
+function fitMob($word) {
+	global $detect;
+	$mob = $detect->isMobile();
+	if ($mob) {
+		return substr($word, 0, 3) . '.';
+	}
+	return $word;
+}
+
 if(strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')!==false || strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')===false )
                 {
                     // do not compress
@@ -190,10 +199,12 @@ if(strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')!==false || strstr($_SERV
 else
 {
         // can send GZIP compressed data
-        //isBuggyIe() || ob_start("ob_gzhandler");
+        isBuggyIe() || DEV_ENV || ob_start("ob_gzhandler");
+
 } 
 
 $cache = new Cache();
 $inflect = new Inflect();
+$detect = new Mobile_Detect();
 unregisterGlobals();
 callHook();

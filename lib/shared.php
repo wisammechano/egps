@@ -183,13 +183,10 @@ function isBuggyIe() {
 
 /** Get Required Files **/
 
-function fitMob($word) {
-	global $detect;
-	$mob = $detect->isMobile();
-	if ($mob) {
-		return substr($word, 0, 3) . '.';
-	}
-	return $word;
+function shorten($value, $type = null) {
+	$ret = Shortener::shorten($value, $type);
+	return $ret;
+
 }
 
 if(strstr($_SERVER['HTTP_USER_AGENT'], 'W3C_Validator')!==false || strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')===false )

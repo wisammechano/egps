@@ -33,11 +33,6 @@ $(document).ready( function() { ////////////////////////////////sdf
 		delSub(i.substr(1));
 	}); 
 	
-/* 	$('body').on('click', '#parse', function (e) {/////////////////////////PARSE
-		e.preventDefault();
-		parseData();
-	}) */
-	
 	$('body').on('change', 'tr select.type', function(){
 		var item=this.value;
 		var units = $(this).parents('tr').find('select.unit');
@@ -59,6 +54,11 @@ $(document).ready( function() { ////////////////////////////////sdf
 			url='?units=' + item;
 			units.load(url);
 		};
+	});
+
+	$('div.subSys').not(':eq(0)').find('div.row').not('div.subHead').hide();
+	$('body').on('click', 'div.subHead', function(){
+		$(this).parent().find('div.row').not('div.subHead').toggle();
 	});
 });
 

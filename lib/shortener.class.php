@@ -22,6 +22,12 @@ class Shortener {
 			}
 			return $ret;
 		}
+		elseif($type === 'heads'){
+			$ret = $val;
+			$ret = $val === 'alarm'? 'alrm':$ret;
+			$ret = $val === 'setpoint'? 'SP':$ret;
+			return $ret; 
+		}
 		elseif($type === 'tag') {
 			$ret = substr($val, -5);
 			return $ret;

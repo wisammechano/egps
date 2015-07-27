@@ -14,7 +14,7 @@ class LogsheetsController extends VanillaController {
 		if ($id === null){
 			redirect('/logsheets/viewall');
 		}
-		$this->_model->select("systemName, blocks, zones.name as zoneName, users.username as addedBy, subsystemsNo, data");
+		$this->_model->select("systemName, blocks, zones.name as zoneName, users.username as addedBy, subsystemsNo, data, logsheets.added as added");
 		$this->_model->join('zones', array('id' => 'zoneID'));
 		$this->_model->join('users', array('id' => 'addedBy'));
 		$this->_model->where(array('id' => $id));
@@ -23,6 +23,7 @@ class LogsheetsController extends VanillaController {
 		$this->set('sysName', $res['systemName']);
 		$this->set('blocks', $res['blocks']);
 		$this->set('zone', $res['zoneName']);
+		$this->set('addedOn', $res['added']);
 		$this->set('addedBy', $res['addedBy']);
 		$this->set('subNo', $res['subsystemsNo']);
 		$this->set('data', $res['data']);

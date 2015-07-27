@@ -56,9 +56,11 @@ $(document).ready( function() { ////////////////////////////////sdf
 		};
 	});
 
-	$('div.subSys').not(':eq(0)').find('div.row').not('div.subHead').hide();
+	$('div.subSys').not(':eq(0)').find('div.row').not('div.subHead').hide().parents('div.subSys').find('span.toggle').removeClass('colapse').addClass('expnd');
 	$('body').on('click', 'div.subHead', function(){
 		$(this).parent().find('div.row').not('div.subHead').toggle();
+		$(this).find('span.toggle').toggleClass('colapse').toggleClass('expnd');
+
 	});
 });
 

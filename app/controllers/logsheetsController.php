@@ -28,11 +28,15 @@ class LogsheetsController extends VanillaController {
 		$this->set('subNo', $res['subsystemsNo']);
 		$this->set('data', $res['data']);
 	}
-	function design () {
+
+	function edit($id = null) {
+	}
+	function design ($id = null) {
 		$units = new Units;
 		$types = $units->getTypes();
 		if (isset($_POST['LSDform'])) {
 			$user = $_SESSION['userID'];
+			$editMode = (bool)$_POST['editMode'];
 			//print_r($_POST);
 			$system = $_POST['systemName'];
 			$blocks = $_POST['block'];
@@ -45,8 +49,8 @@ class LogsheetsController extends VanillaController {
 								'blocks' => $blocks,
 								'zoneID' => $zoneID,
 								'subsystemsNo' => $subsysNo,
-								'data' => array(),
-								'addedBy' => $user);
+								'data' => array()
+								);
 			foreach ($subsys as $data){
 				$tempSub = array();
 				$pattern = '/^\[([^\[\]]+)\]/'; // '/^\[(.+)\]/'
@@ -67,14 +71,44 @@ class LogsheetsController extends VanillaController {
 				}
 				$logSheet['data']+= $tempSub;
 			}
-			$logSheet['data'] = json_encode($logSheet['data']);
+			//$logSheet['data'] = json_encode($logSheet['data']);
+			$tempSub = array();
+			foreach($logSheet['data'] as $sub => $details) {
+				$tempSub[$sub] = array();
+				//$i = 0;
+				foreach ($details as $detail => $values) {
+					$i=0;
+					foreach($values as $value) {
+						$i++;
+						$tempSub[$sub][$i][$detail] = $value;
+					}
+				}
+			}
+			$logSheet['data'] = json_encode($tempSub);
 			print_r($logSheet);
-			$this->_model->insert($logSheet);
+			if($editMode){
+				$editID = $_POST['editMode'];
+				$logSheet['lastEditBy'] = $user;
+				$logSheet['edited'] = date("Y-m-d H:i:s");
+				$this->_model->update($logSheet);
+				$this->_model->where(array('id' => $editID));
+			}
+			else
+			{	
+				$logSheet['addedBy'] = $user;
+				$this->_model->insert($logSheet);
+			}
 			echo $this->_model->execute();
 			$this->render=0;
 		}
+		if($id !== null){
+			$this->set('editMode', $id);
+			$this->_model->select('*');
+			$this->_model->where(array('id' => $id));
+			$res = $this->_model->execute();
+			print_r($res); // complete edit modeeeeeeeeeeeee
+		}
 		$this->set('types', $types);
-		
 		$this->_model->from("zones");
 		$this->_model->select("id, name");
 		$zones = $this->_model->execute();

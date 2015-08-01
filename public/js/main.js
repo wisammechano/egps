@@ -58,9 +58,15 @@ $(document).ready( function() { ////////////////////////////////sdf
 
 	$('div.subSys').not(':eq(0)').find('div.row').not('div.subHead').hide().parents('div.subSys').find('span.toggle').removeClass('colapse').addClass('expnd');
 	$('body').on('click', 'div.subHead', function(){
-		$(this).parent().find('div.row').not('div.subHead').toggle();
+		$(this).parent().find('div.row').not('div.subHead').slideToggle(200);
 		$(this).find('span.toggle').toggleClass('colapse').toggleClass('expnd');
 
+	});
+	$('table.tableLS > tbody.tbody').sortable({
+			containment: "parent",
+			stop: function() {
+					$(this).find('tr').numerate();
+		}
 	});
 });
 
@@ -129,6 +135,12 @@ function addSub(clone, i) {
 		
 	}
 	$('input[type="tel"]').forceNumeric();
+	$('table.tableLS > tbody.tbody').sortable({
+			containment: "parent",
+			stop: function() {
+					$(this).find('tr').numerate();
+		}
+	});
 }
 
 function delSub(i) {
@@ -249,6 +261,16 @@ function parseData() {
 	};
 } ( jQuery ));
 
+//Numerate
+(function ( $ ) {
+	jQuery.fn.numerate = function() {
+		return this.each(function (i) {
+			var html = $(this).find('.n').html();
+			html = html.replace(/\d+/, i+1);
+			$(this).find('.n').html(html);
+		});
+	};
+}( jQuery ));
 
 // Force Numeric
 (function ( $ ) {
@@ -280,7 +302,7 @@ function parseData() {
 
 // Format Dates
 (function ($) {
-    $.fn.formatDate = function (format) {
+    jQuery.fn.formatDate = function (format) {
         var months = { '1': '01', '2': '02', '3': '03', '4': '04', '5': '05', '6': '06', '7': '07', '8': '08', '9': '09', '10': '10',
             '11': '11', '12': '12'
         };
@@ -467,3 +489,5 @@ function parseData() {
         }
     };
 })(jQuery);
+
+

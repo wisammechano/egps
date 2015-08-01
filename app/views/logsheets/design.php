@@ -2,6 +2,7 @@
 <div class="design-box">
 	<form id="designLS" class="validate" method="post" action="./design">
 		<input type="hidden" id="parsed" name="LSDform" value="submit">
+		<input type="hidden" id="editMode" name="editMode" value="<?php echo isset($editMode)? $editMode:'0'?>">
 		<table class="tableLS">
 			<thead>
 				<tr>
@@ -61,7 +62,7 @@
 					<td><div class="required"><input type="text" id="tag" class="form-control center-text" placeholder="<?php $ph->P("tagnumber");?>"></div></td>
 					<td>
 					<div class="required">
-						<select id="type" class="form-control type required" <!--name="system['subsys']['types'][]-->">
+						<select id="type" class="form-control type required">
 							<option selected="true" value="" style="display:none;">Please Select</option>
 							<?php foreach($types as $type => $value): ?>
 							<option value="<?php echo $type;?>"><?php echo $value;?></option>
@@ -72,7 +73,7 @@
 					<td>
 						<div class="select-editable">
 							<input type="text" id="unit" class="form-control unit hide">
-							<select id="unit" class="form-control unit" <!--name="system['subsys']['units'][]-->">
+							<select id="unit" class="form-control unit">
 							</select>
 						</div>
 					</td>

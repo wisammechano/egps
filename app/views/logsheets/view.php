@@ -14,7 +14,7 @@ foreach($data as $sub => $details) {
 		}
 	}
 }
-
+$parsed = $data; // fix t heads
 ?>
 <div class="view-box">
 	<div class="LS-head" id="sysName">

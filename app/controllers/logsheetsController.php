@@ -106,7 +106,7 @@ class LogsheetsController extends VanillaController {
 			$this->_model->select('*');
 			$this->_model->where(array('id' => $id));
 			$res = $this->_model->execute();
-			print_r($res); // complete edit modeeeeeeeeeeeee
+			$this->set('LS', $res);
 		}
 		$this->set('types', $types);
 		$this->_model->from("zones");

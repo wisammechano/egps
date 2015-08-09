@@ -1,8 +1,8 @@
-﻿<?php $ph->setSection(__FILE__);?>
+﻿<?php $ph->setSection(__FILE__); $LS['data'] = json_decode($LS['data'], 1); print_r($LS)?>
 <div class="design-box">
 	<form id="designLS" class="validate" method="post" action="./design">
 		<input type="hidden" id="parsed" name="LSDform" value="submit">
-		<input type="hidden" id="editMode" name="editMode" value="<?php echo isset($editMode)? $editMode:'0'?>">
+		<?php if(!empty($LS)): ?><input type="hidden" id="editMode" name="editMode" value="<?php echo $editMode;?>"><?php endif;?>
 		<table class="tableLS">
 			<thead>
 				<tr>
